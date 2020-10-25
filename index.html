@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+
+  <title>Statsify Overlay</title>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700|Roboto:300,400,700&display=swap">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./styles.css">
+
+  <!-- Scripts -->
+  <script>
+    delete module.exports
+  </script>
+  <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script>
+
+</head>
+
+<header>
+  <div class="topnav">
+    <a><img src="img/logo.png">STATSIFY OVERLAY</a>
+
+    <div class="topnav buttons">
+      <span class="dot" style="background-color: #FE6058;" onclick="closeWindow()"></span>
+      <span class="dot" style="background-color: #FDBF30;" onclick="minimizeWindow()"></span>
+    </div>
+  </div>
+</header>
+
+<body>
+
+  <table id = "playerTable">
+    <tr>
+      <th></th>
+      <th class="white">PLAYER</th>
+      <th class="white">WS</th>
+      <th class="white">WINS</th>
+      <th class="white">FINALS</th>
+      <th class="white">FKDR</th>
+      <th class="white">WLR</th>
+      <th class="white">BBLR</th>
+    </tr>
+  </table>
+
+</body>
+
+<script src="js/playerUpdater.js"></script>
+<script src="js/playerFetcher.js"></script>
+<script src="js/tableUpdater.js"></script>
+<script src="js/controlButtons.js"></script>
+
+</html>

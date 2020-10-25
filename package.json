@@ -1,0 +1,21 @@
+{
+  "name": "statsify-overlay",
+  "version": "1.0.0",
+  "description": "Statsify Overlay",
+  "main": "app.js",
+  "scripts": {
+    "pack:osx": "electron-packager . Overlay3 --overwrite --out=dist/osx --platform=darwin --arch=x64 --icons=assets/mac.icns",
+    "pack:win32": "electron-packager . Overlay3 --overwrite --out=dist/win --platform=win32 --arch=ia32",
+    "pack:win64": "electron-packager . Overlay3 --overwrite --out=dist/win --platform=win32 --arch=x64 --version=0.36.2 app-version=1.0 --icons=assets/windows.ico",
+    "build": "npm run pack:osx && npm run pack:win32 && npm run pack:win64",
+    "start": "electron --enable-transparent-visuals ."
+  },
+  "license": "STATPIXEL",
+  "devDependencies": {
+    "electron": "^3.0.2",
+    "electron-packager": "^15.1.0"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.1"
+  }
+}
