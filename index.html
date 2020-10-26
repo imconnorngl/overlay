@@ -7,35 +7,35 @@
   <title>Statsify Overlay</title>
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700|Roboto:300,400,700&display=swap">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Poppins:300,400,700|Roboto:300,400,700&display=swap">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="./styles.css">
 
   <!-- Scripts -->
-  <script>
-    delete module.exports
-  </script>
-  <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+  <script>delete module.exports</script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script>
 
 </head>
 
 <header>
   <div class="topnav">
-    <a><img src="img/logo.png">STATSIFY OVERLAY</a>
+    <a><img src="img/logo.png"> STATSIFY OVERLAY</a>
 
     <div class="topnav buttons">
-      <span class="dot" style="background-color: #FDBC40;" onclick="minimizeWindow()"></span>
-      <span class="dot" style="background-color: #35C749;" onclick="maximizeWindow()"></span>
-      <span class="dot" style="background-color: #FC5753;" onclick="closeWindow()"></span>
+      <button class="dot yellow-button" style="-webkit-app-region: no-drag; background-color: #FDBC40;"
+        onclick="minimizeWindow()"></button>
+      <button class="dot green-button" style="-webkit-app-region: no-drag; background-color: #35C749;"
+        onclick="maximizeWindow()"></button>
+      <button class="dot red-button" style="-webkit-app-region: no-drag; background-color: #FC5753;"
+        onclick="closeWindow()"></button>
     </div>
   </div>
 </header>
 
-<body>
-
-  <table id = "playerTable">
+<body id="body" onclick="showWindow()">
+  <table id="playerTable">
     <tr>
       <th></th>
       <th class="white">PLAYER</th>

@@ -9,7 +9,7 @@ var maximized = false;
 
 const maximizeWindow = () => {
     var window = remote.getCurrentWindow()
-    if(!window.isMaximized() && !maximized) {
+    if(!maximized) {
         window.maximize()
         maximized = true;
     }
@@ -22,4 +22,12 @@ const maximizeWindow = () => {
 const minimizeWindow = () => {
     var window = remote.BrowserWindow.getFocusedWindow();
     window.minimize();
+}
+
+const hideWindow = () => {
+    document.getElementById("body").classList.add("hidden");
+}
+
+const showWindow = () => {
+    document.getElementById("body").classList.remove("hidden");
 }

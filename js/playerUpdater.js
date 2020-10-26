@@ -6,13 +6,15 @@ var timesRead = 0
 
 const readLogFile = async () => {
     var newSize = fs.fstatSync(fileLocation).size
-    if (newSize < mostRecentSize + 1) {
+    if(timesRead == 0){
+        mostRecentSize = newSize
         timesRead++
+        setTimeout(readLogFile, 10)
+    } else if (newSize < mostRecentSize + 1) {
         setTimeout(readLogFile, 10)
     } else {
         fs.read(fileLocation, Buffer.alloc(256), 0, 256, mostRecentSize, (err, bytecount, buff) => {
             mostRecentSize += bytecount
-            if (timesRead < 1) return setTimeout(readLogFile, 10)
 
             const lines = buff.toString().split(/\r?\n/).slice(0, -1);
             lines.forEach(line => processLine(line))

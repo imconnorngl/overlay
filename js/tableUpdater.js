@@ -165,14 +165,15 @@ const getThreatColor = index => {
 var timeOut;
 
 const tableUpdater = async () => {
-  var win = remote.getCurrentWindow()
 
-  win.restore()
+
+  showWindow()
 
   clearTimeout(timeOut);
   timeOut = setTimeout(() => {
-    win.minimize()
+    hideWindow()
   }, 20000)
+
   const table = document.getElementById("playerTable");
 
   var rowCount = table.rows.length;
@@ -203,12 +204,13 @@ const tableUpdater = async () => {
     var fkdr = row.insertCell(5);
     var wlr = row.insertCell(6);
     var bblr = row.insertCell(7);
+
     if (player.exists == false) {
       name.innerHTML = mcColorParser(`§7${player.username} - §4Nicked.`)
     } else {
       var threatColor = getThreatColor(player.threatIndex)
       head.innerHTML = `<img src="https://api.statsify.net/gen/head?player=${player.username}&flat=true"; class="skull";></img>`
-      name.innerHTML = mcColorParser(`${getBwFormattedLevel(Math.floor(player.stats.bedwars.level))} ${player.displayName}`)
+      name.innerHTML = `${mcColorParser(`${getBwFormattedLevel(Math.floor(player.stats.bedwars.level))} ${player.displayName}`)}`
       ws.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars.overall.winstreak.toLocaleString()}`)
       wins.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars.overall.wins.toLocaleString()}`)
       finals.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars.overall.finalKills.toLocaleString()}`)
