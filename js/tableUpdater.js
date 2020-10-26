@@ -160,9 +160,19 @@ const getThreatColor = index => {
   else if (index <= 750) return `§6`
   else if (index <= 1000) return `§c`
   else return `§4`
-}
+}   
+
+var timeOut;
 
 const tableUpdater = async () => {
+  var win = remote.getCurrentWindow()
+
+  win.restore()
+
+  clearTimeout(timeOut);
+  timeOut = setTimeout(() => {
+    win.minimize()
+  }, 20000)
   const table = document.getElementById("playerTable");
 
   var rowCount = table.rows.length;
@@ -199,9 +209,9 @@ const tableUpdater = async () => {
       var threatColor = getThreatColor(player.threatIndex)
       head.innerHTML = `<img src="https://api.statsify.net/gen/head?player=${player.username}&flat=true"; class="skull";></img>`
       name.innerHTML = mcColorParser(`${getBwFormattedLevel(Math.floor(player.stats.bedwars.level))} ${player.displayName}`)
-      ws.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars.overall.winstreak}`)
-      wins.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars.overall.wins}`)
-      finals.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars.overall.finalKills}`)
+      ws.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars.overall.winstreak.toLocaleString()}`)
+      wins.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars.overall.wins.toLocaleString()}`)
+      finals.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars.overall.finalKills.toLocaleString()}`)
       fkdr.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars.overall.fkdr}`)
       wlr.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars.overall.wlr}`)
       bblr.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars.overall.bblr}`)
