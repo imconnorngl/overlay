@@ -21,8 +21,7 @@
 
 <header>
   <div class="topnav">
-    <a><img src="img/logo.png"> STATSIFY OVERLAY</a>
-
+    <a onclick="toggleMenu()" style="-webkit-app-region: no-drag;"><img src="img/logo.png"> STATSIFY OVERLAY</a>
     <div class="topnav buttons">
       <button class="dot yellow-button" style="-webkit-app-region: no-drag; background-color: #FDBC40;"
         onclick="minimizeWindow()"></button>
@@ -33,6 +32,11 @@
     </div>
   </div>
 </header>
+
+<div class="menu hidden" id="menu">
+  <br>
+  <p>Settings</p>
+</div>
 
 <body id="body" onclick="showWindow()">
   <table id="playerTable">

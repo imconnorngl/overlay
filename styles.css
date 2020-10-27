@@ -3,6 +3,59 @@
   src: url("./fonts/minecraft-special.ttf");
 }
 
+.menu {
+  position: fixed;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  cursor: none;
+  padding-top: 30px;
+  background-color: rgba(0,0,0, 0.79);
+  z-index: 2;
+}
+
+.tooltip {
+  font-size: 16px;
+  font-family: Minecraft;
+  opacity: 1;
+  position: relative;
+  display: inline-block;
+  font-weight: 80;
+  text-align: left;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  display: inline;
+  visibility: visible;
+  opacity: 1;
+}
+
+.tooltiptext {
+  display: none;
+  visibility: hidden;
+  opacity: 0;
+
+  background: #120211; 
+  padding: 5px; 
+  padding-bottom: 3px; 
+  border-radius: 5px; 
+  border: 1px solid #25015b; 
+  line-height: 17px;
+  left: 350px;
+  padding-right:12px;
+  width: max-content;
+  font-size: 16px;
+
+  position: absolute;
+}
 
 body {
   color: #FFF;
@@ -22,6 +75,10 @@ html {
   height: 100%;
 }
 
+header {
+  z-index: 10;
+}
+
 .skull {
   background-image: url('./img/steve.png');
   background-repeat: no-repeat;
@@ -38,6 +95,7 @@ html {
   position: fixed;
   top: 0;
   width: 100%;
+  z-index: 10;
 }
 
 
@@ -83,6 +141,7 @@ html {
   text-align: right;
   text-decoration: none;
   background-color: rgba(0, 0, 0, 0);
+  z-index: -1;
 }
 
 .dot {
@@ -99,9 +158,7 @@ html {
 table {
   border-collapse: collapse;
   width: 100%;
-
-    position: relative;
-  z-index: 99;
+  position: relative;
 }
 
 td, th {
@@ -118,70 +175,17 @@ td {
   font-size: 16px;
   -webkit-app-region: no-drag;
   -webkit-font-smoothing: antialiased;
+  position: relative;
+}
+
+tr {
+  position: relative;
 }
 
 th {
   padding-top: 5px;
   font-size: 18px;
 }
-
-.tooltip {
-  font-size: 16px;
-  font-family: Minecraft;
-  opacity: 1;
-  position: relative;
-  display: inline-block;
-  font-weight: 80;
-  text-align: left;
-}
-
-.tooltiptext {
-  display: none;
-  visibility: hidden;
-  opacity: 0;
-  background: #120211; 
-  padding: 5px; 
-  padding-bottom: 3px; 
-  border-radius: 5px; 
-  border: 1px solid #25015b; 
-  line-height: 17px;
-  padding-right:12px;
-  width: max-content;
-  font-size: 16px;
-
-  position: absolute;
-  z-index: 999 !important;
-}
-
-.tooltippreview > span {
-  display: inline;
-  position: relative;
-  z-index: 1 !important;
-}
-
-.tooltip:hover .tooltiptext {
-  display: inline;
-  visibility: visible;
-  opacity: 1;
-}
-
-.tooltipupperright {
-  top: -20px;
-  left: 105%;
-}
-
-.tooltiptop {
-  bottom: 100%;
-  left: 50%;
-  margin-left: max-content/2;
-}
-
-.tooltipbottom {
-  top: 100%;
-  left: 50%;
-  margin-left: max-content/2;
-}
-
 
 .black {
   color: #000000;

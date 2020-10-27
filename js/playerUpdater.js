@@ -50,6 +50,7 @@ const processLine = async line => {
     }
 }
 
+
 fs.open('C:/Users/conno/AppData/Roaming/.minecraft/logs/latest.log', 'r', (err, fd) => {
     fileLocation = fd
     readLogFile()

@@ -153,16 +153,7 @@ const mcColorParser = text => {
   return finalText
 }
 
-const makeTooltip = (index, text, html) => {
-  var posClass;
-
-  if (index <= 2) posClass = "tooltipbottom"
-  else if (index < 7) posClass = "tooltipright"
-  else if (index < 10) posClass = "tooltipupperright"
-  else posClass = "tooltiptop"
-
-  return `<div class="tooltip"><span class="tooltippreview">${text}</span><span class="tooltiptext ${posClass}">${html}</span></div>`
-}
+const makeTooltip = (index, text, html) =>  `<div class="tooltip">${text}<span class="tooltiptext" style="bottom: ${-1200 + (index*100)}%">${html}</span></div>`
 
 const getThreatColor = index => {
   if (index <= 100) return `§a`
@@ -217,9 +208,9 @@ const tableUpdater = async () => {
     if (player.exists == false) {
       name.innerHTML = mcColorParser(`§7${player.username} - §4Nicked.`)
     } else {
-      var threatColor = getThreatColor(player.threatIndex)
+      var threatColor = getThreatColor(((player.stats ? player.stats.bedwars : {}).level != undefined ? (player.stats ? player.stats.bedwars : {}).level : Infinity) * ((player.stats ? player.stats.bedwars.overall : {}).fkdr != undefined ? (player.stats ? player.stats.bedwars.overall : {}).fkdr : Infinity))
       head.innerHTML = `<img src="https://api.statsify.net/gen/head?player=${player.username}&flat=true"; class="skull";></img>`
-      name.innerHTML = makeTooltip(index + 1, mcColorParser(`${getBwFormattedLevel(Math.floor(player.stats.bedwars.level))} ${player.displayName}`), mcColorParser(`
+      name.innerHTML = `${makeTooltip(index + 1, mcColorParser(`${getBwFormattedLevel(Math.floor(player.stats.bedwars.level))} ${player.displayName}`), mcColorParser(`
       §7Level: ${getBwFormattedLevel(Math.floor(player.stats.bedwars.level)).replace(/[\[\]]/g, "")}<br>
       §7Winstreak: ${threatColor}${player.stats.bedwars.overall.winstreak.toLocaleString()}<br>
       §7Games Played: ${threatColor}${player.stats.bedwars.overall.games.toLocaleString()}<br>
@@ -235,7 +226,7 @@ const tableUpdater = async () => {
       §7Beds Broken: ${threatColor}${player.stats.bedwars.overall.bedsBroken.toLocaleString()}<br>
       §7Beds Lost: ${threatColor}${player.stats.bedwars.overall.bedsLost.toLocaleString()}<br>
       §7BBLR: ${threatColor}${player.stats.bedwars.overall.bblr}<br>
-      `))
+      `))}</div>`
       ws.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars.overall.winstreak.toLocaleString()}`)
       wins.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars.overall.wins.toLocaleString()}`)
       finals.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars.overall.finalKills.toLocaleString()}`)
