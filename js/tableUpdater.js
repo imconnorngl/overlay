@@ -161,7 +161,7 @@ const makeTooltip = (index, text, html) => {
   else if (index < 10) posClass = "tooltipupperright"
   else posClass = "tooltiptop"
 
-  return `<div class="tooltip">${text}<span class="tooltipcode ${posClass || "tooltiptop"}">${html}</span></div>`
+  return `<div class="tooltip"><span class="tooltippreview">${text}</span><span class="tooltiptext ${posClass}">${html}</span></div>`
 }
 
 const getThreatColor = index => {
@@ -176,8 +176,6 @@ const getThreatColor = index => {
 var timeOut;
 
 const tableUpdater = async () => {
-
-
   showWindow()
 
   clearTimeout(timeOut);
@@ -222,21 +220,21 @@ const tableUpdater = async () => {
       var threatColor = getThreatColor(player.threatIndex)
       head.innerHTML = `<img src="https://api.statsify.net/gen/head?player=${player.username}&flat=true"; class="skull";></img>`
       name.innerHTML = makeTooltip(index + 1, mcColorParser(`${getBwFormattedLevel(Math.floor(player.stats.bedwars.level))} ${player.displayName}`), mcColorParser(`
-      §7Games Played: ${threatColor}${player.stats.bedwars.overall.games.toLocaleString()}<br />
-      §7Winstreak: ${threatColor}${player.stats.bedwars.overall.winstreak.toLocaleString()}<br />
-      <br />
-      §7Wins: ${threatColor}${player.stats.bedwars.overall.wins.toLocaleString()}<br />
-      §7Losses: ${threatColor}${player.stats.bedwars.overall.losses.toLocaleString()}<br />
-      §7WLR: ${threatColor}${player.stats.bedwars.overall.wlr}<br />
-      <br />
-      §7Final Kills: ${threatColor}${player.stats.bedwars.overall.finalKills.toLocaleString()}<br />
-      §7Final Deaths: ${threatColor}${player.stats.bedwars.overall.finalDeaths.toLocaleString()}<br />
+      §7Level: ${getBwFormattedLevel(Math.floor(player.stats.bedwars.level)).replace(/[\[\]]/g, "")}<br>
+      §7Winstreak: ${threatColor}${player.stats.bedwars.overall.winstreak.toLocaleString()}<br>
+      §7Games Played: ${threatColor}${player.stats.bedwars.overall.games.toLocaleString()}<br>
+      <br>
+      §7Wins: ${threatColor}${player.stats.bedwars.overall.wins.toLocaleString()}<br>
+      §7Losses: ${threatColor}${player.stats.bedwars.overall.losses.toLocaleString()}<br>
+      §7WLR: ${threatColor}${player.stats.bedwars.overall.wlr}<br>
+      <br>
+      §7Final Kills: ${threatColor}${player.stats.bedwars.overall.finalKills.toLocaleString()}<br>
+      §7Final Deaths: ${threatColor}${player.stats.bedwars.overall.finalDeaths.toLocaleString()}<br>
       §7FKDR: ${threatColor}${player.stats.bedwars.overall.fkdr}<br />
-      <br />
-      §7Beds Broken: ${threatColor}${player.stats.bedwars.overall.bedsBroken.toLocaleString()}<br />
-      §7Beds Lost: ${threatColor}${player.stats.bedwars.overall.bedsLost.toLocaleString()}<br />
-      §7BBLR: ${threatColor}${player.stats.bedwars.overall.bblr}<br />
-      <br />
+      <br>
+      §7Beds Broken: ${threatColor}${player.stats.bedwars.overall.bedsBroken.toLocaleString()}<br>
+      §7Beds Lost: ${threatColor}${player.stats.bedwars.overall.bedsLost.toLocaleString()}<br>
+      §7BBLR: ${threatColor}${player.stats.bedwars.overall.bblr}<br>
       `))
       ws.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars.overall.winstreak.toLocaleString()}`)
       wins.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars.overall.wins.toLocaleString()}`)
