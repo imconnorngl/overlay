@@ -8,13 +8,13 @@ let window = null
 const reload = () => window.reload()
 
 app.once('ready', () => {
-  const { width } = electron.screen.getPrimaryDisplay().workAreaSize
+  const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize
   window = new BrowserWindow({
     width: 750,
     height: 460,
     transparent: true,
     x: width - 750,
-    y: 0,
+    y: 23,
     show: false,
     frame: false,
     icon: "./img/favicon.ico",

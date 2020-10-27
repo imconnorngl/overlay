@@ -1,4 +1,7 @@
 const fs = require('fs');
+var ks = require('node-key-sender');
+
+ks.setOption('globalDelayBetweenMillisec', 30);
 
 var mostRecentSize = 0
 var fileLocation;
@@ -28,6 +31,11 @@ const processLine = async line => {
 
     if (line.includes("Sending you to mini") || line.includes("spooked into the lobby!")) {
         resetPlayers()
+        if(line.includes("Sending you to mini")) {
+            setTimeout(() => {
+                ks.sendKeys(['slash', 'w', 'h', 'o', 'enter'])
+            }, 600)
+        }
     } else if (line.includes(" has joined (")) {
         var player = line.split(" [CHAT] ")[1].split(" has joined")[0]
         addPlayer(player)
@@ -47,7 +55,7 @@ const processLine = async line => {
     }
 }
 
-fs.open('C:/Users/conno/AppData/Roaming/.minecraft/logs/latest.log', 'r', (err, fd) => {
+fs.open('C:/Users/jabab/.lunarclient/offline/files/1.8.9/logs/latest.log', 'r', (err, fd) => {
     fileLocation = fd
     readLogFile()
 })
