@@ -166,7 +166,9 @@ const getThreatColor = index => {
 
 var timeOut;
 
-const tableUpdater = async () => {
+const tableUpdater = async mode => {
+  mode = mode ? mode : "overall"
+  
   showWindow()
 
   clearTimeout(timeOut);
@@ -184,8 +186,8 @@ const tableUpdater = async () => {
     var aLevel = (a.stats ? a.stats.bedwars : {}).level != undefined ? (a.stats ? a.stats.bedwars : {}).level : Infinity
     var bLevel = (b.stats ? b.stats.bedwars : {}).level != undefined ? (b.stats ? b.stats.bedwars : {}).level : Infinity
 
-    var aFKDR = (a.stats ? a.stats.bedwars.overall : {}).fkdr != undefined ? (a.stats ? a.stats.bedwars.overall : {}).fkdr : Infinity
-    var bFKDR = (b.stats ? b.stats.bedwars.overall : {}).fkdr != undefined ? (b.stats ? b.stats.bedwars.overall : {}).fkdr : Infinity
+    var aFKDR = (a.stats ? a.stats.bedwars[mode] : {}).fkdr != undefined ? (a.stats ? a.stats.bedwars[mode] : {}).fkdr : Infinity
+    var bFKDR = (b.stats ? b.stats.bedwars[mode] : {}).fkdr != undefined ? (b.stats ? b.stats.bedwars[mode] : {}).fkdr : Infinity
 
     a.threatIndex = aLevel * aFKDR
     b.threatIndex = bLevel * bFKDR
@@ -212,27 +214,27 @@ const tableUpdater = async () => {
       head.innerHTML = `<img src="https://api.statsify.net/gen/head?player=${player.username}&flat=true"; class="skull";></img>`
       name.innerHTML = `${makeTooltip(index + 1, mcColorParser(`${getBwFormattedLevel(Math.floor(player.stats.bedwars.level))} ${player.displayName}`), mcColorParser(`
       §7Level: ${getBwFormattedLevel(Math.floor(player.stats.bedwars.level)).replace(/[\[\]]/g, "")}<br>
-      §7Winstreak: ${threatColor}${player.stats.bedwars.overall.winstreak.toLocaleString()}<br>
-      §7Games Played: ${threatColor}${player.stats.bedwars.overall.games.toLocaleString()}<br>
+      §7Winstreak: ${threatColor}${player.stats.bedwars[mode].winstreak.toLocaleString()}<br>
+      §7Games Played: ${threatColor}${player.stats.bedwars[mode].games.toLocaleString()}<br>
       <br>
-      §7Wins: ${threatColor}${player.stats.bedwars.overall.wins.toLocaleString()}<br>
-      §7Losses: ${threatColor}${player.stats.bedwars.overall.losses.toLocaleString()}<br>
-      §7WLR: ${threatColor}${player.stats.bedwars.overall.wlr}<br>
+      §7Wins: ${threatColor}${player.stats.bedwars[mode].wins.toLocaleString()}<br>
+      §7Losses: ${threatColor}${player.stats.bedwars[mode].losses.toLocaleString()}<br>
+      §7WLR: ${threatColor}${player.stats.bedwars[mode].wlr}<br>
       <br>
-      §7Final Kills: ${threatColor}${player.stats.bedwars.overall.finalKills.toLocaleString()}<br>
-      §7Final Deaths: ${threatColor}${player.stats.bedwars.overall.finalDeaths.toLocaleString()}<br>
-      §7FKDR: ${threatColor}${player.stats.bedwars.overall.fkdr}<br />
+      §7Final Kills: ${threatColor}${player.stats.bedwars[mode].finalKills.toLocaleString()}<br>
+      §7Final Deaths: ${threatColor}${player.stats.bedwars[mode].finalDeaths.toLocaleString()}<br>
+      §7FKDR: ${threatColor}${player.stats.bedwars[mode].fkdr}<br />
       <br>
-      §7Beds Broken: ${threatColor}${player.stats.bedwars.overall.bedsBroken.toLocaleString()}<br>
-      §7Beds Lost: ${threatColor}${player.stats.bedwars.overall.bedsLost.toLocaleString()}<br>
-      §7BBLR: ${threatColor}${player.stats.bedwars.overall.bblr}<br>
+      §7Beds Broken: ${threatColor}${player.stats.bedwars[mode].bedsBroken.toLocaleString()}<br>
+      §7Beds Lost: ${threatColor}${player.stats.bedwars[mode].bedsLost.toLocaleString()}<br>
+      §7BBLR: ${threatColor}${player.stats.bedwars[mode].bblr}<br>
       `))}</div>`
-      ws.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars.overall.winstreak.toLocaleString()}`)
-      wins.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars.overall.wins.toLocaleString()}`)
-      finals.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars.overall.finalKills.toLocaleString()}`)
-      fkdr.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars.overall.fkdr}`)
-      wlr.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars.overall.wlr}`)
-      bblr.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars.overall.bblr}`)
+      ws.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars[mode].winstreak.toLocaleString()}`)
+      wins.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars[mode].wins.toLocaleString()}`)
+      finals.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars[mode].finalKills.toLocaleString()}`)
+      fkdr.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars[mode].fkdr}`)
+      wlr.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars[mode].wlr}`)
+      bblr.innerHTML = mcColorParser(`${threatColor}${player.stats.bedwars[mode].bblr}`)
     }
   });
 }

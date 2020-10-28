@@ -50,8 +50,12 @@ const processLine = async line => {
     }
 }
 
+const readLogs = () => {
+    fs.open((readFromStorage("path")), 'r', (err, fd) => {
+        fileLocation = fd
+        readLogFile()
+    })
+}
 
-fs.open('C:/Users/conno/AppData/Roaming/.minecraft/logs/latest.log', 'r', (err, fd) => {
-    fileLocation = fd
-    readLogFile()
-})
+if (readFromStorage("path")) readLogs()
+

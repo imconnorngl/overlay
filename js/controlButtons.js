@@ -31,8 +31,3 @@ const hideWindow = () => {
 const showWindow = () => {
     document.getElementById("body").classList.remove("hidden");
 }
-
-function toggleMenu() {
-    console.log(`test`)
-    document.getElementById("menu").classList.toggle("hidden");
-}
