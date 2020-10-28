@@ -1,4 +1,5 @@
 const Store = require('electron-store');
+const { app } = require('electron').remote
 const dialog = require('electron').remote.dialog 
 
 const store = new Store();
@@ -44,3 +45,24 @@ pathBtn.onclick = () => {
     });
 }
 
+var lastClient;
+
+const clientSwitcher = () => {
+    var client = document.getElementById("logMode").value
+    if (client == lastClient) return;
+    lastClient = client;
+
+    var path = app.getPath("home").replace(/\\/g, "\/");
+
+    if (client == "vf") path += "/AppData/Roaming/.minecraft/logs/";
+    else if (client == "bc") path += "/AppData/Roaming/.minecraft/logs/blclient/minecraft";
+    else if (client == "lc") path += "/.lunarclient/offline/files/1.8.9/logs/";
+    else if (client == "plc") path += "/AppData/Roaming/.pvplounge/logs/";
+
+    path += "latest.log"
+    
+    fs.open(path, 'r', (err, fd) => {
+        if (err) return;
+        writeToStorage("path", path)
+    })
+}

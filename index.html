@@ -43,7 +43,7 @@
   </label>
   <label class="alongside">alongside:</label>
   <br>
-  <select id="logMode" name="Choose your client..." style="-webkit-app-region: no-drag">
+  <select id="logMode" name="Choose your client..." style="-webkit-app-region: no-drag" onclick="clientSwitcher()">
     <option value="vf">Vanilla/Forge</option>
     <option value="bc">Badlion Client</option>
     <option value="lc">Lunar Client</option>
@@ -51,7 +51,7 @@
   </select>
   <br>
   <br>
-  <button id="close" onclick="toggleMenu()"><img src = "./img/icons/close.png"/>Close</button> 
+  <button id="close" style="-webkit-app-region: no-drag" onclick="toggleMenu()"><img src = "./img/icons/close.png"/>Close</button> 
 </div>
 
 <body id="body" onclick="showWindow()">
