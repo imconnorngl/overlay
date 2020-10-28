@@ -33,7 +33,25 @@
 <div class="menu hidden" id="menu">
   <br>
   <h1>Settings</h1>
-  <button id="path-input" class = "FileSelect" placeholder="latest.log path..." style="-webkit-app-region: no-drag"><img src = "./img/icons/folder_open.png"/> Set latest.log Location</button>
+  <br>
+  <button id="path-input" style="-webkit-app-region: no-drag"><img src = "./img/icons/folder_open.png"/> Locate Log Location</button>
+  <br>
+  <br>
+  <label class="switch" style="-webkit-app-region: no-drag" >
+    <input type="checkbox" checked>
+    <span class="slider round"></span>
+  </label>
+  <label class="alongside">alongside:</label>
+  <br>
+  <select id="logMode" name="Choose your client..." style="-webkit-app-region: no-drag">
+    <option value="vf">Vanilla/Forge</option>
+    <option value="bc">Badlion Client</option>
+    <option value="lc">Lunar Client</option>
+    <option value="plc">PvPLounge Client</option>
+  </select>
+  <br>
+  <br>
+  <button id="close" onclick="toggleMenu()"><img src = "./img/icons/close.png"/>Close</button> 
 </div>
 
 <body id="body" onclick="showWindow()">

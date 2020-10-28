@@ -1,7 +1,5 @@
 const Store = require('electron-store');
-const { read } = require('fs');
 const dialog = require('electron').remote.dialog 
-const path = require('path');
 
 const store = new Store();
 
@@ -41,6 +39,7 @@ pathBtn.onclick = () => {
         if (filePath_obj) {
             writeToStorage('path', filePath_obj[0].replace(/\\/g, "\/"))
             readLogs()
+            toggleMenu()
         } 
     });
 }

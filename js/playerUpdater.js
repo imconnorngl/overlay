@@ -57,5 +57,9 @@ const readLogs = () => {
     })
 }
 
-if (readFromStorage("path")) readLogs()
+if (readFromStorage("path")){
+    readLogs()
+}else{
+    toggleMenu()
+}
 

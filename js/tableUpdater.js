@@ -166,9 +166,7 @@ const getThreatColor = index => {
 
 var timeOut;
 
-const tableUpdater = async mode => {
-  mode = mode ? mode : "overall"
-  
+const tableUpdater = async (mode = "overall") => {
   showWindow()
 
   clearTimeout(timeOut);
