@@ -30,7 +30,9 @@ const processLine = async line => {
     if (!line.includes('[Client thread/INFO]: [CHAT]')) return;
     if (line.includes("spooked into the lobby!") || line.includes("Sending you to mini")) {
         resetPlayers()
-        if(line.includes("Sending you to mini")) setTimeout(() => ks.sendKeys(['slash', 'w', 'h', 'o', 'enter']), 600)    
+        resetCache()
+        var autoWhoToggle = readFromStorage("autoWho")
+        if(line.includes("Sending you to mini") && autoWhoToggle && autoWhoToggle == true) setTimeout(() => ks.sendKeys(['slash', 'w', 'h', 'o', 'enter']), 600)    
     } else if (line.includes(" has joined (")) {
         var player = line.split(" [CHAT] ")[1].split(" has joined")[0]
         addPlayer(player)
@@ -47,6 +49,10 @@ const processLine = async line => {
         var player = line.split(" Can't find a player by the name of '")[1]
         player = player.slice(1, -1)
         addPlayer(player)
+    } else if (line.includes("[CHAT] Your new API key is ")) {
+        var key = line.split("[CHAT] Your new API key is ")[1];
+        document.getElementById("apiKeyField").value = key;
+        writeToStorage("api", key);
     }
 }
 

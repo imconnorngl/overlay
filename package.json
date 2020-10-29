@@ -17,6 +17,7 @@
     "node-key-sender": "^1.0.11"
   },
   "dependencies": {
+    "electron-builder": "^22.9.1",
     "electron-store": "^6.0.1",
     "node-fetch": "^2.6.1",
     "node-red-contrib-sendkeys": "0.0.1"

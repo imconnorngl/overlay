@@ -20,7 +20,7 @@
 </head>
 
 <header>
-  <div class="topnav">
+  <div class="topnav" style="-webkit-app-region: drag;">
     <a onclick="toggleMenu()" style="-webkit-app-region: no-drag;"><img src="img/logo.png"> STATSIFY OVERLAY</a>
     <div class="topnav buttons">
       <button class="dot yellow-button" style="-webkit-app-region: no-drag; background-color: #FDBC40;" onclick="minimizeWindow()"></button>
@@ -31,26 +31,49 @@
 </header>
 
 <div class="menu hidden" id="menu">
+  <div id="bannerMessage"><h1>Settings</h1><br></div>
   <br>
-  <h1>Settings</h1>
+  <select id="logMode" style="-webkit-app-region: no-drag" onclick="clientSwitcher()">
+    <option value="vf" id="vfOption">Vanilla/Forge</option>
+    <option value="bc" id="bcOption">Badlion Client</option>
+    <option value="lc" id="lcOption">Lunar Client (AC OFF)</option>
+    <option value="plc" id="plcOption">PvPLounge Client</option>
+  </select>
+  <button id="path-input" style="-webkit-app-region: no-drag"><img src = "./img/icons/folder_open.png"/> Manually Select Log</button>
   <br>
-  <div id="errorMsg"></div>
   <br>
-  <button id="path-input" style="-webkit-app-region: no-drag"><img src = "./img/icons/folder_open.png"/> Locate Log Location</button>
-  <br>
-  <br>
-  <select id="logMode" name="Choose your client..." style="-webkit-app-region: no-drag" onclick="clientSwitcher()">
-    <option value="vf">Vanilla/Forge</option>
-    <option value="bc">Badlion Client</option>
-    <option value="lc">Lunar Client</option>
-    <option value="plc">PvPLounge Client</option>
+  <select id="sortMode" style="-webkit-app-region: no-drag; width: 30%" onclick="sortSwitcher()">
+    <option value="threat" id="threatOption">Sort by Threat</option>
+    <option value="level" id="levelOption">Sort by Level</option>
+    <option value="fkdr" id="fkdrOption">Sort by FKDR</option>
+  </select>
+  <select id="modeSwitch" style="-webkit-app-region: no-drag; width: 30%" onclick="modeSwitcher()">
+    <option value="overall" id="overallOption">Overall</option>
+    <option value="solo" id="soloOption">Solo</option>
+    <option value="doubles" id="doublesOption">Doubles</option>
+    <option value="threes" id="threesOption">Threes</option>
+    <option value="fours" id="foursOption">Fours</option>
+    <option value="4v4" id="4v4Option">4v4</option>
   </select>
   <br>
   <br>
-  <button id="close" style="-webkit-app-region: no-drag" onclick="toggleMenu()"><img src = "./img/icons/close.png"/>Close</button> 
+  <input type="text" id="apiKeyField" placeholder="No saved API key" style="-webkit-app-region: no-drag"></input> <button type="submit" style="-webkit-app-region: no-drag" onclick="apiKeySubmitter()">Save</button>
+  <br>
+  <label class="switch" style="-webkit-app-region: no-drag">
+    <input type="checkbox" id="whoSwitchOption" onclick="whoSwitch()">
+    <span class="slider round"></span>
+    <p style="position: relative; left: -120px; top: -15px; width: 120px"><span title="Automatically does /who when joining a game. Use at your own risk." style="-webkit-app-region: no-drag">Auto Who*: </span></p>
+  </label>
+  <br>
+  <label class="switch" style="-webkit-app-region: no-drag">
+    <input type="checkbox" id="hideSwitchOption" onclick="hideSwitch()">
+    <span class="slider round"></span>
+    <p style="position: relative; left: -120px; top: -15px; width: 120px"><span title="Automatically hides the overlay after 20 seconds of inactivity. Do /who for it to return." style="-webkit-app-region: no-drag">Auto Hide*: </span></p>
+  </label>
+  <footer id="creditFooter" style="-webkit-app-region: no-drag"></footer>           
 </div>
 
-<body id="body" onclick="showWindow()">
+<body id="body" style="-webkit-app-region: no-drag">
   <table id="playerTable">
     <tr>
       <th></th>
@@ -66,9 +89,11 @@
 
 </body>
 
+<script src="utils/misc.js"></script>
+<script src="utils/bedwars.js"></script>
 <script src="js/settingsConfig.js"></script>
-<script src="js/playerUpdater.js"></script>
 <script src="js/playerFetcher.js"></script>
+<script src="js/playerUpdater.js"></script>
 <script src="js/tableUpdater.js"></script>
 <script src="js/controlButtons.js"></script>
 

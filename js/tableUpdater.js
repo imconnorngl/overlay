@@ -139,6 +139,11 @@ const resetPlayers = async () => {
   tableUpdater()
 }
 
+const resetCache = async () => {
+  cachedPlayers = {}
+  tableUpdater()
+}
+
 const removePlayer = async player => {
   if (!player in currentPlayers) return;
   delete currentPlayers[player]
@@ -166,12 +171,14 @@ const getThreatColor = index => {
 
 var timeOut;
 
-const tableUpdater = async (mode = "overall") => {
+const tableUpdater = async () => {
+  var mode = readFromStorage("mode") || "overall"
   showWindow()
 
   clearTimeout(timeOut);
   timeOut = setTimeout(() => {
-    //hideWindow()
+    var hideMode = readFromStorage("autoHide")
+    if(hideMode == undefined || hideMode == true) hideWindow()
   }, 20000)
 
   const table = document.getElementById("playerTable");
@@ -190,7 +197,11 @@ const tableUpdater = async (mode = "overall") => {
     a.threatIndex = aLevel * aFKDR
     b.threatIndex = bLevel * bFKDR
 
-    return b.threatIndex - a.threatIndex
+    var sortMode = readFromStorage("sort") || "threat"
+
+    if(sortMode == "threat") return b.threatIndex - a.threatIndex
+    else if(sortMode == "level") return bLevel - aLevel
+    else return bFKDR - aFKDR
   })
 
   objectValues.forEach(async (player, index) => {

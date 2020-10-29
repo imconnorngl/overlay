@@ -20,7 +20,9 @@ app.once('ready', () => {
     icon: "./img/favicon.ico",
   })
 
-  window.setAlwaysOnTop(true, 'screen');
+  if (process.os == "darwin") app.dock.hide();
+  window.setAlwaysOnTop(true, "floating", 1);
+  window.setVisibleOnAllWorkspaces(true);
 
   window.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
@@ -29,7 +31,6 @@ app.once('ready', () => {
   }))
 
   window.once('ready-to-show', () => {
-    globalShortcut.register('F5', reload);
     window.show()
   })
-})
+});

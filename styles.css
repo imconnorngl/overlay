@@ -3,89 +3,12 @@
   src: url("./fonts/minecraft-special.ttf");
 }
 
-.menu {
-  font-family: "Poppins", sans-serif;
-  position: fixed;
-  display: block;
-  margin-right: auto;
-  margin-left: auto;
-  text-align: center;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  cursor: none;
-  padding-top: 30px;
-  background-color: rgba(0,0,0, 0.79);
-  z-index: 2;
-}
-
-.menu button {
-  width: max-content;
-  padding: 5px;
-  bottom: 20px;
-
-  outline: none;
-  background: none;
-
-  border-style: solid;
-  border-color: #FFFFFF;
-  border-width: 2px;
-
-  color: #FFF;
-  font-family: "Poppins", sans-serif;
-  font-size: 16px;
-  font-weight: 80;
-
-}
-
-.menu img {
-  width: 25px;
-}
-
-.error {
-  padding-top: .75rem;
-  padding-bottom: .75rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-
-  text-align: left;
-
-  border-top: 4px solid #f56565;
-  background-color: #FFF5F5;
-  color: #060E0F;
-
-  width: 80%;
-  display: inline-block;
-  margin: auto;
-}
-
-.error-img {
-  padding-top: .25rem;
-  padding-bottom: .25rem;
-  width: auto;
-}
-
-.error-header {
-  font-weight: bold;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.error-content {
-
-  padding-left: 1rem;
-  display: inline-block;
-  vertical-align: middle;
-}
-
 .switch {
   position: relative;
   display: inline-block;
   width: 60px;
   height: 34px;
+  left: 5%
 }
 
 .switch input { 
@@ -132,7 +55,6 @@ input:checked + .slider:before {
   transform: translateX(26px);
 }
 
-/* Rounded sliders */
 .slider.round {
   border-radius: 34px;
 }
@@ -141,7 +63,45 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-.menu select {
+.menu {
+  font-family: "Poppins", sans-serif;
+  position: fixed;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding-top: 30px;
+  background-color: rgba(0,0,0, 0.79);
+  z-index: 2;
+}
+
+.menu button {
+  width: max-content;
+  padding: 7.3px;
+  padding-top: 9.7px;
+
+  outline: none;
+  background: none;
+  border: 2px solid #aaa;
+
+  color: #FFF;
+  font-family: "Poppins", sans-serif;
+  font-size: 15px;
+  font-weight: 80;
+
+}
+
+.menu button:hover {
+  border: 2px solid white;
+}
+
+.menu input {
   -webkit-user-select: none;
   font: 400 12px/16px "Poppins", sans-serif;
   width: 50%;
@@ -153,6 +113,123 @@ input:checked + .slider:before {
   background: transparent;
   margin: 0 0 5px;
   padding: 10px;
+  font-size: 15px;
+  outline: none;
+}
+
+.menu button[type="submit"] {
+  width: max-content;
+  padding: 7.3px;
+  margin-bottom: 20px;
+
+  outline: none;
+  background: none;
+
+  border: 2px solid #aaa;
+
+  color: #FFF;
+  font-size: 15px;
+  font-weight: 80;
+}
+
+.menu button[type="submit"]:hover {
+  border: 2px solid white;
+}
+
+.menu img {
+  width: 15px;
+}
+
+footer{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:30px;
+  color: #aaa;
+}
+.error {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  text-align: left;
+
+  border-top: 4px solid #f56565;
+  background-color: #FFF5F5;
+  color: #060E0F;
+
+  width: 80%;
+  display: inline-block;
+  margin: auto;
+}
+
+.error-img {
+  padding-top: .25rem;
+  padding-bottom: .25rem;
+  width: auto;
+}
+
+.error-header {
+  font-weight: bold;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.error-content {
+
+  padding-left: 1rem;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.success {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  text-align: left;
+
+  border-top: 4px solid #48bb78;
+  background-color: #F5FFF5;
+  color: #060E0F;
+
+  width: 80%;
+  display: inline-block;
+  margin: auto;
+}
+
+.success-img {
+  padding-top: .25rem;
+  padding-bottom: .25rem;
+  width: auto;
+}
+
+.success-header {
+  font-weight: bold;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.success-content {
+
+  padding-left: 1rem;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+
+.menu select {
+  -webkit-user-select: none;
+  width: 50%;
+  border: none;
+  color: white;
+  position: relative;
+  text-align: center;
+  border: 2px solid #aaa;
+  background: transparent;
+  padding: 7.3px;
   font-size: 15px;
   outline: none;
 }
