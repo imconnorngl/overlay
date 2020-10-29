@@ -1,7 +1,7 @@
 const fs = require('fs');
 var ks = require('node-key-sender');
 
-ks.setOption('globalDelayBetweenMillisec', 30);
+ks.setOption('globalDelayPressMillisec', 20);
 
 var mostRecentSize = 0
 var fileLocation;

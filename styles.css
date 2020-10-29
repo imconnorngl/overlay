@@ -45,6 +45,42 @@
   width: 25px;
 }
 
+.error {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  text-align: left;
+
+  border-top: 4px solid #f56565;
+  background-color: #FFF5F5;
+  color: #060E0F;
+
+  width: 80%;
+  display: inline-block;
+  margin: auto;
+}
+
+.error-img {
+  padding-top: .25rem;
+  padding-bottom: .25rem;
+  width: auto;
+}
+
+.error-header {
+  font-weight: bold;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.error-content {
+
+  padding-left: 1rem;
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .switch {
   position: relative;
   display: inline-block;

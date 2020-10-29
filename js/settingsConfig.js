@@ -39,13 +39,14 @@ pathBtn.onclick = () => {
     dialog.showOpenDialog(options, filePath_obj => { 
         if (filePath_obj) {
             writeToStorage('path', filePath_obj[0].replace(/\\/g, "\/"))
-            readLogs()
-            toggleMenu()
+            
+            var window = remote.getCurrentWindow()
+            window.reload()
         } 
     });
 }
 
-var lastClient;
+var lastClient = "vf";
 
 const clientSwitcher = () => {
     var client = document.getElementById("logMode").value
@@ -55,14 +56,32 @@ const clientSwitcher = () => {
     var path = app.getPath("home").replace(/\\/g, "\/");
 
     if (client == "vf") path += "/AppData/Roaming/.minecraft/logs/";
-    else if (client == "bc") path += "/AppData/Roaming/.minecraft/logs/blclient/minecraft";
+    else if (client == "bc") path += "/AppData/Roaming/.minecraft/logs/blclient/minecraft/";
     else if (client == "lc") path += "/.lunarclient/offline/files/1.8.9/logs/";
     else if (client == "plc") path += "/AppData/Roaming/.pvplounge/logs/";
 
     path += "latest.log"
     
     fs.open(path, 'r', (err, fd) => {
-        if (err) return;
+        if (!fd) {
+            document.getElementById("errorMsg").innerHTML = `
+            <div class="error">
+                <img class="error-img" src="./img/icons/error.png" />
+                <div class="error-header">An Unexpected Error Occured</div>
+                <br />
+                <div class="error-content">
+                <p>The log file associated with that log file, try reinstalling the client in the default location or manually selecting the log file.</p>
+                </div>
+            </div>
+          `
+
+          return;
+        }
+        else document.getElementById("errorMsg").innerHTML = ``;
+
         writeToStorage("path", path)
+
+       var window = remote.getCurrentWindow()
+       window.reload()
     })
 }
