@@ -1,6 +1,27 @@
 const fetch = require('node-fetch')
 
+var keyCount;
+var keyMax;
+
+const getKey = async (key) => {
+    return new Promise(async resolve => {
+        const data = await fetch(`https://api.hypixel.net/key?key=${key}`)
+        try { var body = await data.json() } catch { resolve({ valid: false }) }
+        if (body.success) resolve({ valid: true, max: body.record.limit })
+        else resolve({ valid: false })
+    })
+}
+
+const addRequest = () => {
+    if (keyCount != undefined && keyMax != undefined) {
+        keyCount++
+        document.getElementById("creditFooter").innerHTML = `Requests: ${keyCount}/${keyMax}<br>${credits}`
+    }
+}
+
+
 const getPlayer = async (user) => {
+    addRequest()
     return new Promise(async resolve => {
         const data = await fetch(`https://api.hypixel.net/player?key=${readFromStorage("api")}&name=${user}`)
         try { var body = await data.json() } catch { resolve({ outage: true }) }
@@ -164,11 +185,27 @@ const getPlayer = async (user) => {
     })
 }
 
-const getKey = async (key) => {
-    return new Promise(async resolve => {
-        const data = await fetch(`https://api.hypixel.net/key?key=${key}`)
-        try { var body = await data.json() } catch { resolve({ valid: false }) }
-        if (body.success) resolve({ valid: true })
-        else resolve({ valid: false })
+var authors = ["imconnorngl", "VideoGameKing"]
+var authorRandom = Math.round(Math.random());
+var credits = `Made by ${authors[authorRandom]} & ${authors.find(a => a != authors[authorRandom])} © Statsify Inc.`
+
+var api = readFromStorage("api")
+
+if (api) {
+    document.getElementById("apiKeyField").value = api
+
+    getKey(api).then(keyStatus => {
+        if (keyStatus.valid == true) {
+            keyCount = 0
+            keyMax = keyStatus.max
+    
+            setInterval(() => {
+                keyCount = 0
+                document.getElementById("creditFooter").innerHTML = `Requests: ${keyCount}/${keyMax}<br>${credits}`
+            }, 60000)
+            document.getElementById("creditFooter").innerHTML = `Requests: ${keyCount}/${keyMax}<br>${credits}`
+        }
     })
+} else {
+    document.getElementById("creditFooter").innerHTML = `Requests: N/A<br>${credits}`
 }

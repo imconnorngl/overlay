@@ -53,9 +53,6 @@ pathBtn.onclick = () => {
     });
 }
 
-var api = readFromStorage("api")
-if (api) document.getElementById("apiKeyField").value = api
-
 const apiKeySubmitter = async () => {
     var key = document.getElementById("apiKeyField").value
     if (!key) return;
@@ -87,10 +84,6 @@ const apiKeySubmitter = async () => {
         writeToStorage("api", key)
     }
 }
-
-var authors = ["imconnorngl", "VideoGameKing"]
-var authorRandom = Math.round(Math.random());
-document.getElementById("creditFooter").innerHTML = `Made by ${authors[authorRandom]} & ${authors.find(a => a != authors[authorRandom])} © Statsify Inc.`
 
 var autoWho = readFromStorage("autoWho")
 if (!autoWho || autoWho == false) document.getElementById("whoSwitchOption").checked = false
