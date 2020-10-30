@@ -3,6 +3,7 @@ const { remote } = electron
 
 const closeWindow = () => {
     window.close();
+    proccess.exit()
 }
 
 var maximized = false;

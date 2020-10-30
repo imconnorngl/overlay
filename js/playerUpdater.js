@@ -45,6 +45,10 @@ const processLine = async line => {
         players.forEach(player => {
             addPlayer(player)
         })
+    } else if (line.includes(" Can't find a player by the name of '.hidewindow'")) {
+        hideWindow()
+    } else if (line.includes(" Can't find a player by the name of '.showwindow'")) {
+        showWindow()
     } else if (line.includes(" Can't find a player by the name of '")) {
         var player = line.split(" Can't find a player by the name of '")[1]
         player = player.slice(1, -1)
