@@ -2,24 +2,60 @@
   "name": "statsify-overlay",
   "version": "1.0.0",
   "description": "Statsify Overlay",
+  "author": "Statsify Inc",
   "main": "app.js",
   "scripts": {
-    "pack:osx": "electron-packager . Overlay3 --overwrite --out=dist/osx --platform=darwin --arch=x64 --icons=assets/mac.icns",
-    "pack:win32": "electron-packager . Overlay3 --overwrite --out=dist/win --platform=win32 --arch=ia32",
-    "pack:win64": "electron-packager . Overlay3 --overwrite --out=dist/win --platform=win32 --arch=x64 --version=0.36.2 app-version=1.0 --icons=assets/windows.ico",
-    "build": "npm run pack:osx && npm run pack:win32 && npm run pack:win64",
-    "start": "electron --enable-transparent-visuals ."
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "license": "STATPIXEL",
   "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.54",
+    "@electron-forge/maker-deb": "^6.0.0-beta.54",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.54",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.54",
+    "@electron-forge/maker-zip": "^6.0.0-beta.54",
     "electron": "^3.0.2",
-    "electron-packager": "^15.1.0",
+    "electron-wix-msi": "^3.0.4",
     "node-key-sender": "^1.0.11"
   },
   "dependencies": {
-    "electron-builder": "^22.9.1",
+    "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^6.0.1",
+    "git-all": "0.0.3",
     "node-fetch": "^2.6.1",
     "node-red-contrib-sendkeys": "0.0.1"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {
+        "icon": "./img/favicon.ico"
+      },
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "setupIcon": "./img/favicon.ico",
+            "setupExe": "statsify-setup.exe",
+            "name": "statsify-overlay"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
   }
 }

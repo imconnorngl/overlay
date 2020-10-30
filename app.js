@@ -5,7 +5,7 @@ const url = require('url')
 
 let window = null
 
-const reload = () => window.reload()
+if (require('electron-squirrel-startup')) return app.quit();
 
 app.once('ready', () => {
   const { width } = electron.screen.getPrimaryDisplay().workAreaSize
