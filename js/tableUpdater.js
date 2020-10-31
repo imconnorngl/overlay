@@ -209,19 +209,26 @@ const tableUpdater = async () => {
 
     var head = row.insertCell(0);
     var name = row.insertCell(1);
-    var ws = row.insertCell(2);
-    var wins = row.insertCell(3);
-    var finals = row.insertCell(4);
-    var fkdr = row.insertCell(5);
-    var wlr = row.insertCell(6);
-    var bblr = row.insertCell(7);
+    var tag = row.insertCell(2);
+    var ws = row.insertCell(3);
+    var wins = row.insertCell(4);
+    var finals = row.insertCell(5);
+    var fkdr = row.insertCell(6);
+    var wlr = row.insertCell(7);
+    var bblr = row.insertCell(8);
 
     if (player.exists == false) {
       name.innerHTML = mcColorParser(`§7${player.username} - §4Nicked.`)
     } else {
+      if(player.chat == "PARTY") tag.innerHTML = mcColorParser(`§9PARTY`)
+
+
       var threatColor = getThreatColor(((player.stats ? player.stats.bedwars : {}).level != undefined ? (player.stats ? player.stats.bedwars : {}).level : Infinity) * ((player.stats ? player.stats.bedwars.overall : {}).fkdr != undefined ? (player.stats ? player.stats.bedwars.overall : {}).fkdr : Infinity))
-      head.innerHTML = `<img src="https://api.statsify.net/gen/head?player=${player.username}&flat=true"; class="skull";></img>`
+      head.innerHTML = `<img src="https://crafatar.com/avatars/${player.uuid}?overlay=true"; class="skull";></img>`
       name.innerHTML = `${makeTooltip(index + 1, mcColorParser(`${getBwFormattedLevel(Math.floor(player.stats.bedwars.level))} ${player.displayName}`), mcColorParser(`
+      ${player.displayName}
+      <br>
+      <br>
       §7Level: ${getBwFormattedLevel(Math.floor(player.stats.bedwars.level)).replace(/[\[\]]/g, "")}<br>
       §7Winstreak: ${threatColor}${player.stats.bedwars[mode].winstreak.toLocaleString()}<br>
       §7Games Played: ${threatColor}${player.stats.bedwars[mode].games.toLocaleString()}<br>

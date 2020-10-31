@@ -23,6 +23,7 @@ const addRequest = () => {
 const getPlayer = async (user) => {
     addRequest()
     return new Promise(async resolve => {
+        const requestTime = Date.now()
         const data = await fetch(`https://api.hypixel.net/player?key=${readFromStorage("api")}&name=${user}`)
         try { var body = await data.json() } catch { resolve({ outage: true }) }
         if (body.success == false || body.player == null || !body.player.displayname) resolve({ exists: false })
@@ -37,6 +38,7 @@ const getPlayer = async (user) => {
                 uuid: player.uuid,
                 username: player.displayname,
                 displayName: `${formattedRank}${player.displayname}`,
+                chat: player.channel,
     
                 rank: rank,
                 plus: plusColor,
@@ -179,7 +181,9 @@ const getPlayer = async (user) => {
                             }
                         }
                     }
-                }
+                },
+
+                requestedAt: requestTime
             })
         }
     })
