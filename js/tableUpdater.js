@@ -226,7 +226,6 @@ const tableUpdater = async () => {
     else {
       if(player.chat == "PARTY") tag.innerHTML = mcColorParser(`§9PARTY`)
 
-
       var threatColor = getThreatColor(((player.stats ? player.stats.bedwars : {}).level != undefined ? (player.stats ? player.stats.bedwars : {}).level : Infinity) * ((player.stats ? player.stats.bedwars.overall : {}).fkdr != undefined ? (player.stats ? player.stats.bedwars.overall : {}).fkdr : Infinity))
       head.innerHTML = `<img src="https://crafatar.com/avatars/${player.uuid}?overlay=true"; class="skull";></img>`
       name.innerHTML = `${makeTooltip(index + 1, mcColorParser(`${getBwFormattedLevel(Math.floor(player.stats.bedwars.level))} ${player.displayName}`), mcColorParser(`

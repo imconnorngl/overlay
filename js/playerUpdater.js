@@ -68,9 +68,8 @@ const readLogs = () => {
 }
 
 const getFileAccessDate = path => {
-    var stats;
     try { 
-        stats = fs.statSync(path) 
+        var stats = fs.statSync(path) 
     } catch { 
         return null 
     }

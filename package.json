@@ -1,6 +1,6 @@
 {
   "name": "statsify-overlay",
-  "version": "1.1.0",
+  "version": "1.0.0",
   "description": "Statsify Overlay",
   "author": "Statsify Inc",
   "main": "app.js",
@@ -9,7 +9,7 @@
     "package": "electron-forge package",
     "make": "electron-forge make"
   },
-  "license": "MIT",
+  "license": "STATPIXEL",
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.54",
     "@electron-forge/maker-deb": "^6.0.0-beta.54",
@@ -24,7 +24,8 @@
     "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^6.0.1",
     "git-all": "0.0.3",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "node-red-contrib-sendkeys": "0.0.1"
   },
   "config": {
     "forge": {
