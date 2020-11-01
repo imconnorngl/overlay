@@ -25,7 +25,6 @@
     "electron-store": "^6.0.1",
     "git-all": "0.0.3",
     "node-fetch": "^2.6.1",
-    "node-red-contrib-sendkeys": "0.0.1"
   },
   "config": {
     "forge": {

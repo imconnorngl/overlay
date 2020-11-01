@@ -26,6 +26,8 @@ const getPlayer = async (user) => {
         const requestTime = Date.now()
         const data = await fetch(`https://api.hypixel.net/player?key=${readFromStorage("api")}&name=${user}`)
         try { var body = await data.json() } catch { resolve({ outage: true }) }
+        if (body.throttle) resolve({ throttle: true })
+        if (body.cause == "Invalid API key") resolve({ invalid: true })
         if (body.success == false || body.player == null || !body.player.displayname) resolve({ exists: false })
         else {
             var player = body.player
