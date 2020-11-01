@@ -10,9 +10,10 @@ Here is an example below
 
 You should use an overlay because it helps you avoid snipers nicks, and sweaty players.
 
-You can find out if a player is a sniper or a nick with the tags e.g:
+You can find out if a player is partied or is a nick with the tags e.g:
 
-S = Sniper, N = Nick.
+Party
+Nicked
 
 ## Where can I download the overlay?
 
