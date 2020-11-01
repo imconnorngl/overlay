@@ -219,7 +219,7 @@ const tableUpdater = async () => {
 
     if (player.exists == false) {
       name.innerHTML = mcColorParser(`§7${player.username}`)
-      tag.innerHTML = mcColorParser(`§4Nicked`)
+      tag.innerHTML = mcColorParser(`§4NICKED`)
     }
     else if (player.throttle) name.innerHTML = mcColorParser(`§7${player.username || "ERROR"} - §cKey Throttle`)
     else if (player.invalid) name.innerHTML = mcColorParser(`§7${player.username || "ERROR"} - §cInvalid API Key`)
