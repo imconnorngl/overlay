@@ -4,12 +4,13 @@
   "description": "Statsify Overlay",
   "author": "Statsify Inc",
   "main": "app.js",
+  "repository": {},
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make"
   },
-  "license": "STATPIXEL",
+  "license": "MIT",
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.54",
     "@electron-forge/maker-deb": "^6.0.0-beta.54",

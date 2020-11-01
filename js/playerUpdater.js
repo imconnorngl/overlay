@@ -78,25 +78,13 @@ const getFileAccessDate = path => {
     return stats.mtime
 }
 
-if (readFromStorage("path")) readLogs()
+if (readFromStorage("path"))readLogs()
 else{
     const logFiles = [
-        {
-            name: "lunar",
-            path: `${app.getPath("home").replace(/\\/g, "\/")}/.lunarclient/offline/files/1.8.9/logs/latest.log`
-        },
-        {
-            name: "vanilla",
-            path: `${app.getPath("home").replace(/\\/g, "\/")}/AppData/Roaming/.minecraft/logs/latest.log`
-        },
-        {
-            name: "badlion",
-            path: `${app.getPath("home").replace(/\\/g, "\/")}/AppData/Roaming/.minecraft/logs/blclient/minecraft/latest.log`
-        }, 
-        {
-            name: "pvplongue",
-            path: `${app.getPath("home").replace(/\\/g, "\/")}/AppData/Roaming/.pvplounge/logs/latest.log`
-        }
+        { name: "lunar", path: `${app.getPath("home").replace(/\\/g, "\/")}/.lunarclient/offline/files/1.8.9/logs/latest.log` },
+        { name: "vanilla", path: `${app.getPath("home").replace(/\\/g, "\/")}/AppData/Roaming/.minecraft/logs/latest.log` },
+        { name: "badlion", path: `${app.getPath("home").replace(/\\/g, "\/")}/AppData/Roaming/.minecraft/logs/blclient/minecraft/latest.log` }, 
+        { name: "pvplongue", path: `${app.getPath("home").replace(/\\/g, "\/")}/AppData/Roaming/.pvplounge/logs/latest.log` }
     ]
 
     logFiles.sort((a, b) => {
@@ -111,7 +99,20 @@ else{
 
     if (logFiles[0].time) {
         writeToStorage("path", logFiles[0].path)
-        setClientDropdown()
+        switch(logFiles[0].name) {
+            case "lunar":
+                document.getElementById("lcOption").selected = "selected"
+                break;
+            case "vanilla":
+                document.getElementById("vfOption").selected = "selected"
+                break;
+            case "badlion":
+                document.getElementById("bcOption").selected = "selected"
+                break;
+            case "pvplongue":
+                document.getElementById("plcOption").selected = "selected"
+                break;
+        }
         readLogs()
     }
     else toggleMenu()
