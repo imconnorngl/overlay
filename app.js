@@ -10,7 +10,7 @@ if (require('electron-squirrel-startup')) return app.quit();
 app.once('ready', () => {
   const { width } = electron.screen.getPrimaryDisplay().workAreaSize
   window = new BrowserWindow({
-    width: 750,
+    width: 650,
     height: 460,
     transparent: true,
     x: width - 750,
