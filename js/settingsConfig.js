@@ -107,22 +107,26 @@ const hideSwitch = () => {
     else writeToStorage("autoHide", false)
 }
 
-var path = readFromStorage("path")
-if (path) {
-    if (path.includes("blclient")) {
-        var lastClient = "bc"
-        document.getElementById("bcOption").selected = "selected"
-    } else if (path.includes("lunarclient")) {
-        var lastClient = "lc"
-        document.getElementById("lcOption").selected = "selected"
-    } else if (path.includes("pvplounge")) {
-        var lastClient = "plc"
-        document.getElementById("plcOption").selected = "selected"
-    } else {
-        var lastClient = "vf"
-        document.getElementById("vfOption").selected = "selected"
-    }
-} else var lastClient = ""
+const setClientDropdown = () => {
+    var path = readFromStorage("path")
+    if (path) {
+        if (path.includes("blclient")) {
+            var lastClient = "bc"
+            document.getElementById("bcOption").selected = "selected"
+        } else if (path.includes("lunarclient")) {
+            var lastClient = "lc"
+            document.getElementById("lcOption").selected = "selected"
+        } else if (path.includes("pvplounge")) {
+            var lastClient = "plc"
+            document.getElementById("plcOption").selected = "selected"
+        } else {
+            var lastClient = "vf"
+            document.getElementById("vfOption").selected = "selected"
+        }
+    } else var lastClient = ""
+}
+
+setClientDropdown()
 
 const clientSwitcher = () => {
     var client = document.getElementById("logMode").value

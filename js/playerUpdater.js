@@ -67,9 +67,54 @@ const readLogs = () => {
     })
 }
 
-if (readFromStorage("path")){
-    readLogs()
-}else{
-    toggleMenu()
+const getFileAccessDate = path => {
+    var stats;
+    try { 
+        stats = fs.statSync(path) 
+    } catch { 
+        return null 
+    }
+
+    if (!stats) return null
+    return stats.mtime
+}
+
+if (readFromStorage("path")) readLogs()
+else{
+    const logFiles = [
+        {
+            name: "lunar",
+            path: `${app.getPath("home").replace(/\\/g, "\/")}/.lunarclient/offline/files/1.8.9/logs/latest.log`
+        },
+        {
+            name: "vanilla",
+            path: `${app.getPath("home").replace(/\\/g, "\/")}/AppData/Roaming/.minecraft/logs/latest.log`
+        },
+        {
+            name: "badlion",
+            path: `${app.getPath("home").replace(/\\/g, "\/")}/AppData/Roaming/.minecraft/logs/blclient/minecraft/latest.log`
+        }, 
+        {
+            name: "pvplongue",
+            path: `${app.getPath("home").replace(/\\/g, "\/")}/AppData/Roaming/.pvplounge/logs/latest.log`
+        }
+    ]
+
+    logFiles.sort((a, b) => {
+        const timeA = getFileAccessDate(a.path)
+        const timeB = getFileAccessDate(b.path) 
+
+        b.time = timeB || null
+        a.time = timeA || null
+
+        return b.time - a.time
+    })
+
+    if (logFiles[0].time) {
+        writeToStorage("path", logFiles[0].path)
+        setClientDropdown()
+        readLogs()
+    }
+    else toggleMenu()
 }
 

@@ -217,7 +217,10 @@ const tableUpdater = async () => {
     var wlr = row.insertCell(7);
     var bblr = row.insertCell(8);
 
-    if (player.exists == false) name.innerHTML = mcColorParser(`§7${player.username} - §4Nicked.`)
+    if (player.exists == false) {
+      name.innerHTML = mcColorParser(`§7${player.username}`)
+      tag.innerHTML = mcColorParser(`§4Nicked`)
+    }
     else if (player.throttle) name.innerHTML = mcColorParser(`§7${player.username || "ERROR"} - §cKey Throttle`)
     else if (player.invalid) name.innerHTML = mcColorParser(`§7${player.username || "ERROR"} - §cInvalid API Key`)
     else {
