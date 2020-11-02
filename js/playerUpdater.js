@@ -80,14 +80,14 @@ const getFileAccessDate = path => {
 
 if (readFromStorage("path"))readLogs()
 else{
-    const logFiles = [
+    var logFiles = [
         { name: "lunar", path: `${app.getPath("home").replace(/\\/g, "\/")}/.lunarclient/offline/files/1.8.9/logs/latest.log` },
         { name: "vanilla", path: `${app.getPath("home").replace(/\\/g, "\/")}/AppData/Roaming/.minecraft/logs/latest.log` },
         { name: "badlion", path: `${app.getPath("home").replace(/\\/g, "\/")}/AppData/Roaming/.minecraft/logs/blclient/minecraft/latest.log` }, 
         { name: "pvplongue", path: `${app.getPath("home").replace(/\\/g, "\/")}/AppData/Roaming/.pvplounge/logs/latest.log` }
     ]
 
-    logFiles.sort((a, b) => {
+    logFiles = logFiles.sort((a, b) => {
         const timeA = getFileAccessDate(a.path)
         const timeB = getFileAccessDate(b.path) 
 
@@ -96,6 +96,8 @@ else{
 
         return b.time - a.time
     })
+
+    console.log(logFiles)
 
     if (logFiles[0].time) {
         writeToStorage("path", logFiles[0].path)

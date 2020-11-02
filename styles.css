@@ -6,8 +6,8 @@
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px;
-  height: 34px;
+  width: 40px;
+  height: 24px;
   left: 5%
 }
 
@@ -24,35 +24,39 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  border-style: solid;
+  border-width: 1px;
+  border-color: white;
   -webkit-transition: .4s;
-  transition: .4s;
+  transition: .9s;
 }
 
 .slider:before {
   position: absolute;
   content: "";
-  height: 26px;
-  width: 26px;
+  height: 16px;
+  width: 16px;
   left: 4px;
   bottom: 4px;
-  background-color: white;
+  background-color: none;
+  border-color: white;
+  border-width: 2px;
+  border-style: solid;
   -webkit-transition: .4s;
   transition: .4s;
 }
 
 input:checked + .slider {
-  background-color: #187bcd;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #187bcd;
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+  background-color: white;
+  -webkit-transform: translateX(16px);
+  -ms-transform: translateX(16px);
+  transform: translateX(16px);
 }
 
 .slider.round {
@@ -290,7 +294,7 @@ body {
 
 .hidden {
   display: hidden;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: rgb(1,1,1,1);
 }
 
 html {
@@ -322,24 +326,50 @@ header {
   position: fixed;
   top: 0;
   width: 100%;
+  height: 32px;
   z-index: 10;
 }
 
 
 .topnav a {
-  float: left;
+  float: none;
   display: block;
   color: #f2f2f2;
   font-family: "Poppins", sans-serif;
   text-align: center;
   text-decoration: none;
   font-size: 18px;
-  padding-top: 5px;
+  margin-top: 3px;
+  display: inline-block;
+  height: 100%;
+  
 }
 
-.topnav img {
-  padding-bottom: 5px;
-  padding-left: 5px;
+.settings-icon {
+  margin: 5px;
+  margin-left: 2px;
+  margin-top: 0px;
+  width: 16px;
+  height: 16px;
+}
+
+.settings-icon:hover {
+  animation: spin-animation 1.5s infinite;
+  display: inline-block;
+}
+
+@keyframes spin-animation {
+  0% {
+    trransform: rotate(0deg)
+  }
+  100% {
+    transform: rotate(359deg)
+  }
+}
+ 
+.topnav a img {
+  padding-bottom: 3px;
+  padding-left: 3px;
   width: 25px;
   height: 25px;
 }
@@ -383,6 +413,7 @@ header {
 }
 
 table {
+  margin-top: 5px;
   border-collapse: collapse;
   width: 100%;
   position: relative;
@@ -575,4 +606,13 @@ th {
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: rgba(11, 11, 11, 0.7); 
+}
+
+.update-header {
+  background-color: rgba(0,0,0,0.8)
+}
+
+.updateBanner {
+    border-radius: 3px;
+    background-color: rgba(0, 0, 1, 0.4)
 }

@@ -3,6 +3,7 @@ const { remote } = electron
 
 const closeWindow = () => {
     window.close();
+    // Fully close/terminate the process so it doesnt run in background 
     proccess.exit()
 }
 

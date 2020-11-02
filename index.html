@@ -21,7 +21,8 @@
 
 <header>
   <div class="topnav" style="-webkit-app-region: drag;">
-    <a onclick="toggleMenu()" style="-webkit-app-region: no-drag;"><img src="img/logo.png"> STATSIFY OVERLAY</a>
+    <a><img src="img/statsify.png"> STATSIFY OVERLAY</a>
+    <img onclick="toggleMenu()" class="settings-icon" style="-webkit-app-region: no-drag" src="img/icons/settings.png"/>
     <div class="topnav buttons">
       <button class="dot yellow-button" style="-webkit-app-region: no-drag; background-color: #FDBC40;" onclick="minimizeWindow()"></button>
       <button class="dot green-button" style="-webkit-app-region: no-drag; background-color: #35C749;" onclick="maximizeWindow()"></button>
@@ -36,7 +37,7 @@
   <select id="logMode" style="-webkit-app-region: no-drag" onclick="clientSwitcher()">
     <option value="vf" id="vfOption">Vanilla/Forge</option>
     <option value="bc" id="bcOption">Badlion Client</option>
-    <option value="lc" id="lcOption">Lunar Client (AC OFF)</option>
+    <option value="lc" id="lcOption">Lunar Client</option>
     <option value="plc" id="plcOption">PvPLounge Client</option>
   </select>
   <button id="path-input" style="-webkit-app-region: no-drag"><img src = "./img/icons/folder_open.png"/> Manually Select Log</button>
@@ -87,7 +88,7 @@
       <th class="white">BBLR</th>
     </tr>
   </table>
-
+  <div id="updateBanner"/>
 </body>
 
 <script src="utils/misc.js"></script>
@@ -97,5 +98,7 @@
 <script src="js/playerUpdater.js"></script>
 <script src="js/tableUpdater.js"></script>
 <script src="js/controlButtons.js"></script>
+<script src="js/dropdownRelease.js"></script>
+<script src="js/getReleases.js"></script>
 
 </html>
