@@ -20,6 +20,24 @@ const readFromStorage = key => {
 
 const deleteFromStorage = key => store.delete(key)
 
+const sendHeader = (body, success = false) => {
+    var type = success ? 'success' : 'error'
+    document.getElementById("bannerMessage").innerHTML = `
+    <div class="${type}">
+        <img class="${type}-img" src="${success ? './img/icons/check.png' : './img/icons/error.png'}" />
+        <div class="${type}-header">${success ? 'Operation Successful' : 'An Unexpected Error Occured'}</div>
+        <br>
+        <div class="${type}-content">
+        <p>${body}</p>
+        </div>
+    </div>
+  `
+
+  setTimeout(() => {
+    document.getElementById("bannerMessage").innerHTML = `<h1>Settings</h1><br>`
+  }, 10000)
+}
+
 const pathBtn = document.getElementById("path-input");
 
 pathBtn.onclick = () => {
@@ -34,17 +52,7 @@ pathBtn.onclick = () => {
 
     dialog.showOpenDialog(options, filePath_obj => {
         if (filePath_obj) {
-            document.getElementById("bannerMessage").innerHTML = `
-        <div class="success">
-            <img class="success-img" src="./img/icons/check.png" />
-            <div class="success-header">Operation Successful</div>
-            <br>
-            <div class="success-content">
-            <p>Your log file has been switched. Refreshing for these changes to take place...</p>
-            </div>
-        </div>
-      `
-
+            sendHeader("Your log file has been switched. Refreshing for these changes to take place...", true)
             writeToStorage('path', filePath_obj[0].replace(/\\/g, "\/"))
 
             var window = remote.getCurrentWindow()
@@ -58,29 +66,9 @@ const apiKeySubmitter = async () => {
     if (!key) return;
     var keyStatus = await getKey(key)
     if (keyStatus.valid == false) {
-        document.getElementById("bannerMessage").innerHTML = `
-        <div class="error">
-            <img class="error-img" src="./img/icons/error.png" />
-            <div class="error-header">An Unexpected Error Occured</div>
-            <br>
-            <div class="error-content">
-            <p>The key you provided was not a valid API key.</p>
-            </div>
-        </div>
-      `
-
-        return;
+        return sendHeader("The key you provided was not a valid API key.", false)
     } else {
-        document.getElementById("bannerMessage").innerHTML = `
-        <div class="success">
-            <img class="success-img" src="./img/icons/check.png" />
-            <div class="success-header">Operation Successful</div>
-            <br>
-            <div class="success-content">
-            <p>Your API key has been set successfully.</p>
-            </div>
-        </div>
-      `
+        sendHeader("Your API key has been set successfully.", true)
         writeToStorage("api", key)
     }
 }
@@ -140,30 +128,9 @@ const clientSwitcher = () => {
 
     fs.open(path, 'r', (err, fd) => {
         if (!fd) {
-            document.getElementById("bannerMessage").innerHTML = `
-            <div class="error">
-                <img class="error-img" src="./img/icons/error.png" />
-                <div class="error-header">An Unexpected Error Occured</div>
-                <br>
-                <div class="error-content">
-                <p>There is no log file associated with that client. Try manually selecting the log file.</p>
-                </div>
-            </div>
-          `
-
-            return;
+            return sendHeader("There is no log file associated with that client. Try manually selecting the log file.", false)   
         } else {
-            document.getElementById("bannerMessage").innerHTML = `
-        <div class="success">
-            <img class="success-img" src="./img/icons/check.png" />
-            <div class="success-header">Operation Successful</div>
-            <br>
-            <div class="success-content">
-            <p>Your log file has been switched. Refreshing for these changes to take place...</p>
-            </div>
-        </div>
-      `
-
+            sendHeader("Your log file has been switched. Refreshing for these changes to take place...", true)  
             writeToStorage("path", path)
 
             var window = remote.getCurrentWindow()
