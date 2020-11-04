@@ -21,7 +21,7 @@ app.once('ready', () => {
   })
 
   if (process.os == "darwin") app.dock.hide();
-  window.setAlwaysOnTop(true, "floating", 1);
+  window.setAlwaysOnTop(true, 'floating');
   window.setVisibleOnAllWorkspaces(true);
 
   window.loadURL(url.format({

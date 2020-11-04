@@ -1,11 +1,13 @@
 const fs = require('fs');
 var ks = require('node-key-sender');
+const { listenerCount } = require('process');
 
 ks.setOption('globalDelayPressMillisec', 18);
 
 var mostRecentSize = 0
 var fileLocation;
 var timesRead = 0
+var lobbyMode = false;
 
 const readLogFile = async () => {
     var newSize = fs.fstatSync(fileLocation).size
@@ -16,7 +18,7 @@ const readLogFile = async () => {
     } else if (newSize < mostRecentSize + 1) {
         setTimeout(readLogFile, 10)
     } else {
-        fs.read(fileLocation, Buffer.alloc(256), 0, 256, mostRecentSize, (err, bytecount, buff) => {
+        fs.read(fileLocation, Buffer.alloc(2056), 0, 2056, mostRecentSize, (err, bytecount, buff) => {
             mostRecentSize += bytecount
 
             const lines = buff.toString().split(/\r?\n/).slice(0, -1);
@@ -29,22 +31,30 @@ const readLogFile = async () => {
 const processLine = async line => {
     if (!line.includes('[Client thread/INFO]: [CHAT]')) return;
     if (line.includes("spooked into the lobby!") || line.includes("Sending you to mini")) {
-        resetPlayers()
-        resetCache()
+        if (lobbyMode == false) {
+            resetPlayers()
+            resetCache()
+        }
+
         var autoWhoToggle = readFromStorage("autoWho")
-        if(line.includes("Sending you to mini") && autoWhoToggle && autoWhoToggle == true) {
-            setTimeout(() => {
-                ks.startBatch()
-                .batchTypeKey('slash')
-                .batchTypeText('who')
-                .batchTypeKey('enter')
-                .sendBatch();
-            }, 600)    
+        if (line.includes("Sending you to mini")) {
+            lobbyMode = false;
+            if(autoWhoToggle && autoWhoToggle == true) {
+                setTimeout(() => {
+                    ks.startBatch()
+                    .batchTypeKey('slash')
+                    .batchTypeText('who')
+                    .batchTypeKey('enter')
+                    .sendBatch();
+                }, 600)    
+            }
         }
     } else if (line.includes(" has joined (")) {
+        lobbyMode = false;
         var player = line.split(" [CHAT] ")[1].split(" has joined")[0]
         addPlayer(player)
     } else if (line.includes(" has quit!")) {
+        lobbyMode = false;
         var player = line.split(" [CHAT] ")[1].split(" has quit!")[0]
         removePlayer(player)
     } else if (line.includes(" ONLINE: ")) {
@@ -53,7 +63,25 @@ const processLine = async line => {
         players.forEach(player => {
             addPlayer(player)
         })
-    } else if (line.includes(" Can't find a player by the name of '.hidewindow'")) {
+    } else if (line.includes("Online Players(")) {
+        lobbyMode = true;
+        resetPlayers()
+        resetCache()
+        
+        var players = line.split(" [CHAT] Online Players(");
+        players.shift()
+
+        players = players[0].split(", ")
+        players.shift()
+
+        players.forEach(player => {
+            if (player.includes(" ")) {
+                player = player.split(" ")[player.split(" ").length - 1]
+            }
+
+            addPlayer(player) 
+        })
+    }else if (line.includes(" Can't find a player by the name of '.hidewindow'")) {
         hideWindow()
     } else if (line.includes(" Can't find a player by the name of '.showwindow'")) {
         showWindow()

@@ -67,6 +67,9 @@ const tableUpdater = async () => {
     var aFKDR = (a.stats ? a.stats.bedwars[mode] : {}).fkdr != undefined ? (a.stats ? a.stats.bedwars[mode] : {}).fkdr : Infinity
     var bFKDR = (b.stats ? b.stats.bedwars[mode] : {}).fkdr != undefined ? (b.stats ? b.stats.bedwars[mode] : {}).fkdr : Infinity
 
+    var aWS = (a.stats ? a.stats.bedwars[mode] : {}).winstreak || 0
+    var bWS = (b.stats ? b.stats.bedwars[mode] : {}).winstreak || 0
+
     a.threatIndex = aLevel * aFKDR
     b.threatIndex = bLevel * bFKDR
 
@@ -74,7 +77,8 @@ const tableUpdater = async () => {
 
     if(sortMode == "threat") return b.threatIndex - a.threatIndex
     else if(sortMode == "level") return bLevel - aLevel
-    else return bFKDR - aFKDR
+    else if (sortMode == "fkdr") return bFKDR - aFKDR
+    else return bWS - aWS
   })
 
   objectValues.forEach(async (player, index) => {

@@ -30,9 +30,7 @@ const sendHeader = (body, success = false) => {
     </div>
   `
 
-  setTimeout(() => {
-    document.getElementById("bannerMessage").innerHTML = `<h1>Settings</h1><br>`
-  }, 10000)
+  setTimeout(() => document.getElementById("bannerMessage").innerHTML = `<h1>Settings</h1><br>`, 10000)
 }
 
 const toggleMenu = () => document.getElementById("menu").classList.toggle("hidden");
@@ -146,7 +144,8 @@ var sortMode = readFromStorage("sort") || "threat"
 
 if (sortMode == "threat") document.getElementById("threatOption").selected = "selected"
 else if (sortMode == "level") document.getElementById("levelOption").selected = "selected"
-else document.getElementById("fkdrOption").selected = "selected"
+else if (sortMode == "fkdr") document.getElementById("fkdrOption").selected = "selected"
+else document.getElementById("wsOption").selected = "selected"
 
 const sortSwitcher = () => {
     var newSortMode = document.getElementById("sortMode").value
