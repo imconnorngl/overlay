@@ -1,5 +1,5 @@
 const electron = require('electron')
-const { app, BrowserWindow, globalShortcut } = electron
+const { app, BrowserWindow } = electron
 const path = require('path')
 const url = require('url')
 
@@ -30,7 +30,5 @@ app.once('ready', () => {
     slashes: true
   }))
 
-  window.once('ready-to-show', () => {
-    window.show()
-  })
+  window.once('ready-to-show', () => window.show())
 });

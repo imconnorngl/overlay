@@ -1,6 +1,5 @@
 const fs = require('fs');
 var ks = require('node-key-sender');
-const { listenerCount } = require('process');
 
 ks.setOption('globalDelayPressMillisec', 18);
 
@@ -75,15 +74,12 @@ const processLine = async line => {
         players.shift()
 
         players.forEach(player => {
-            if (player.includes(" ")) {
-                player = player.split(" ")[player.split(" ").length - 1]
-            }
-
+            if (player.includes(" ")) player = player.split(" ")[player.split(" ").length - 1]
             addPlayer(player) 
         })
-    }else if (line.includes(" Can't find a player by the name of '.hidewindow'")) {
+    }else if (line.includes(" Can't find a player by the name of '.hide'")) {
         hideWindow()
-    } else if (line.includes(" Can't find a player by the name of '.showwindow'")) {
+    } else if (line.includes(" Can't find a player by the name of '.show'")) {
         showWindow()
     } else if (line.includes(" Can't find a player by the name of '")) {
         var player = line.split(" Can't find a player by the name of '")[1]
