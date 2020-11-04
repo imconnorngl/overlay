@@ -1,7 +1,7 @@
 const fs = require('fs');
 var ks = require('node-key-sender');
 
-ks.setOption('globalDelayPressMillisec', 20);
+ks.setOption('globalDelayPressMillisec', 18);
 
 var mostRecentSize = 0
 var fileLocation;
@@ -32,7 +32,15 @@ const processLine = async line => {
         resetPlayers()
         resetCache()
         var autoWhoToggle = readFromStorage("autoWho")
-        if(line.includes("Sending you to mini") && autoWhoToggle && autoWhoToggle == true) setTimeout(() => ks.sendKeys(['slash', 'w', 'h', 'o', 'enter']), 600)    
+        if(line.includes("Sending you to mini") && autoWhoToggle && autoWhoToggle == true) {
+            setTimeout(() => {
+                ks.startBatch()
+                .batchTypeKey('slash')
+                .batchTypeText('who')
+                .batchTypeKey('enter')
+                .sendBatch();
+            }, 600)    
+        }
     } else if (line.includes(" has joined (")) {
         var player = line.split(" [CHAT] ")[1].split(" has joined")[0]
         addPlayer(player)
@@ -75,10 +83,10 @@ const getFileAccessDate = path => {
     }
 
     if (!stats) return null
-    return stats.mtime
+    return stats.mtimeMs
 }
 
-if (readFromStorage("path"))readLogs()
+if (readFromStorage("path")) readLogs()
 else{
     var logFiles = [
         { name: "lunar", path: `${app.getPath("home").replace(/\\/g, "\/")}/.lunarclient/offline/files/1.8.9/logs/latest.log` },
@@ -88,16 +96,11 @@ else{
     ]
 
     logFiles = logFiles.sort((a, b) => {
-        const timeA = getFileAccessDate(a.path)
-        const timeB = getFileAccessDate(b.path) 
-
-        b.time = timeB || null
-        a.time = timeA || null
-
-        return b.time - a.time
+        b.time = getFileAccessDate(a.path) || null
+        a.time = getFileAccessDate(b.path)  || null
+        
+        return a.time - b.time
     })
-
-    console.log(logFiles)
 
     if (logFiles[0].time) {
         writeToStorage("path", logFiles[0].path)
@@ -115,8 +118,9 @@ else{
                 document.getElementById("plcOption").selected = "selected"
                 break;
         }
+
         readLogs()
-    }
-    else toggleMenu()
+
+    } else toggleMenu()
 }
 

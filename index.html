@@ -23,6 +23,7 @@
   <div class="topnav" style="-webkit-app-region: drag;">
     <a><img src="img/statsify.png"> STATSIFY OVERLAY</a>
     <img onclick="toggleMenu()" class="settings-icon" style="-webkit-app-region: no-drag" src="img/icons/settings.png"/>
+    <img onclick="shell.openExternal('https://statsify.net/discord');" class="discord-icon" style="-webkit-app-region: no-drag" src="img/icons/discord.png"/>
     <div class="topnav buttons">
       <button class="dot yellow-button" style="-webkit-app-region: no-drag; background-color: #FDBC40;" onclick="minimizeWindow()"></button>
       <button class="dot green-button" style="-webkit-app-region: no-drag; background-color: #35C749;" onclick="maximizeWindow()"></button>
@@ -60,17 +61,19 @@
   <br>
   <input type="text" id="apiKeyField" placeholder="No saved API key" style="-webkit-app-region: no-drag"></input> <button type="submit" style="-webkit-app-region: no-drag" onclick="apiKeySubmitter()">Save</button>
   <br>
-  <label class="switch" style="-webkit-app-region: no-drag">
-    <input type="checkbox" id="whoSwitchOption" onclick="whoSwitch()">
-    <span class="slider round"></span>
-    <p style="position: relative; left: -120px; top: -15px; width: 120px"><span title="Automatically does /who when joining a game. Use at your own risk." style="-webkit-app-region: no-drag">Auto Who*: </span></p>
-  </label>
-  <br>
-  <label class="switch" style="-webkit-app-region: no-drag">
-    <input type="checkbox" id="hideSwitchOption" onclick="hideSwitch()">
-    <span class="slider round"></span>
-    <p style="position: relative; left: -120px; top: -15px; width: 120px"><span title="Automatically hides the overlay after 20 seconds of inactivity. Do /who for it to return." style="-webkit-app-region: no-drag">Auto Hide*: </span></p>
-  </label>
+  <div class="sliders">
+    <label class="switch" style="-webkit-app-region: no-drag">
+      <input type="checkbox" id="whoSwitchOption" onclick="whoSwitch()">
+      <span class="slider round"></span>
+      <p style="position: relative; left: -120px; top: -15px; width: 120px"><span title="Automatically does /who when joining a game. Use at your own risk." style="-webkit-app-region: no-drag">Auto Who*: </span></p>
+    </label>
+    <br>
+    <label class="switch" style="-webkit-app-region: no-drag">
+      <input type="checkbox" id="hideSwitchOption" onclick="hideSwitch()">
+      <span class="slider round"></span>
+      <p style="position: relative; left: -120px; top: -15px; width: 120px"><span title="Automatically hides the overlay after 20 seconds of inactivity. Do /who for it to return." style="-webkit-app-region: no-drag">Auto Hide*: </span></p>
+    </label>
+  </div>
   <footer id="creditFooter" style="-webkit-app-region: no-drag"></footer>           
 </div>
 

@@ -1,11 +1,18 @@
-const Alert = (title, body, version) => {
+const shell = require('electron').shell;
+
+const updateAlert = (title, body, version) => {
     document.getElementById("updateBanner").innerHTML = `
         <div class="updateBanner">
-            <img class="success-img" src="./img/icons/update.png" />
-            <div class="update-header">${version} ${title}</div>
+            <div class="update-header">
+            ${title}
+            <a href="#"><img  onclick="shell.openExternal('https://statsify.net/overlay');" src="./img/icons/download.png"/></a>
+            </div>
             <br>
-            <div class="success-content">
-            <p>${body}</p>
+            <div class="update-content">
+                <p>${body}</p>
+            </div>
+            <div class="update-footer">
+                New Version: ${version}
             </div>
         </div>`
 };

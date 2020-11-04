@@ -27,6 +27,7 @@
     "git-all": "0.0.3",
     "node-fetch": "^2.6.1",
     "node-red-contrib-sendkeys": "0.0.1",
+    "open": "^7.3.0",
     "semver": "^7.3.2"
   },
   "config": {

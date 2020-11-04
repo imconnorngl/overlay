@@ -13,12 +13,16 @@ const getLatestReleases = async () => {
     })
 }
 
-const latestRelease = getLatestReleases();
-
-if (latestRelease.url) {
-    if (readFromStorage("version") == undefined) writeToStorage("version", latestRelease.tag_name)
-    else {
-        var vers = readFromStorage("version")
-        if (semver.gt(latestRelease.tag_name, version)) Alert(latestRelease.name, latestRelease.body, latestRelease.tag_name)
+(async () => {
+    var latestRelease = await getLatestReleases();
+    if (latestRelease.url) {
+        if (readFromStorage("version") == undefined) writeToStorage("version", latestRelease.tag_name)
+        else {
+            var vers = readFromStorage("version")
+            if (semver.gt(latestRelease.tag_name, vers)) {
+                updateAlert(latestRelease.name, latestRelease.body, latestRelease.tag_name)
+                writeToStorage("version", latestRelease.tag_name)
+            }
+        }
     }
-}
+})()
