@@ -1,4 +1,22 @@
-/* Player Functions */
+var colors = {
+  "0": { color: "black" },
+  "1": { color: "dark_blue" },
+  "2": { color: "dark_green" },
+  "3": { color: "dark_aqua" },
+  "4": { color: "dark_red" },
+  "5": { color: "dark_purple" },
+  "6": { color: "gold" },
+  "7": { color: "gray" },
+  "8": { color: "dark_gray" },
+  "9": { color: "blue" },
+  a: { color: "green" },
+  b: { color: "aqua" },
+  c: { color: "red" },
+  d: { color: "light_purple" },
+  e: { color: "yellow" },
+  f: { color: "white" },
+}
+
 const getRank = json => {
   let rank = 'NON';
   if (json.monthlyPackageRank || json.packageRank || json.newPackageRank) {
@@ -73,10 +91,19 @@ const getRankColor = (rank) => {
 
 const ratio = (n1 = 0, n2 = 0) => isFinite(n1 / n2) ? + (n1 / n2).toFixed(2) : isFinite(n2) ? 0 : Infinity
 
+const mcColorParser = text => {
+  var splitText = text.split("§").slice(1)
+  var finalText = ""
+
+  splitText.forEach(parts => finalText += `<span class="${colors[parts[0]].color} shadow">${parts.split("").slice(1).join("")}</span>`)
+  return finalText
+}
+
 module.exports = {
   getRank,
   getPlusColor,
   getRankColor,
   getFormattedRank,
-  ratio
+  ratio,
+  mcColorParser
 }

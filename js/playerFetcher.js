@@ -3,6 +3,13 @@ const fetch = require('node-fetch')
 var keyCount;
 var keyMax;
 
+const addRequest = () => {
+    if (keyCount != undefined && keyMax != undefined) {
+        keyCount++
+        document.getElementById("creditFooter").innerHTML = `Requests: ${keyCount}/${keyMax}<br>${credits}`
+    }
+}
+
 const getKey = async (key) => {
     return new Promise(async resolve => {
         const data = await fetch(`https://api.hypixel.net/key?key=${key}`)
@@ -11,14 +18,6 @@ const getKey = async (key) => {
         else resolve({ valid: false })
     })
 }
-
-const addRequest = () => {
-    if (keyCount != undefined && keyMax != undefined) {
-        keyCount++
-        document.getElementById("creditFooter").innerHTML = `Requests: ${keyCount}/${keyMax}<br>${credits}`
-    }
-}
-
 
 const getPlayer = async (user) => {
     addRequest()
@@ -191,10 +190,12 @@ const getPlayer = async (user) => {
     })
 }
 
+/* Randomly assign which order the credits are in on run */
 var authors = ["imconnorngl", "VideoGameKing"]
 var authorRandom = Math.round(Math.random());
 var credits = `Made by ${authors[authorRandom]} & ${authors.find(a => a != authors[authorRandom])} © Statsify Inc.`
 
+/* API Counter */
 var api = readFromStorage("api")
 
 if (api) {
