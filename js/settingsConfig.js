@@ -1,10 +1,7 @@
 const Store = require('electron-store');
-const { app } = require('electron').remote
-const dialog = require('electron').remote.dialog
+const { app, dialog } = require('electron').remote
 
 const store = new Store();
-
-const toggleMenu = () => document.getElementById("menu").classList.toggle("hidden");
 
 const writeToStorage = (key, value) => {
     store.set(key, value)
@@ -38,9 +35,10 @@ const sendHeader = (body, success = false) => {
   }, 10000)
 }
 
-const pathBtn = document.getElementById("path-input");
+const toggleMenu = () => document.getElementById("menu").classList.toggle("hidden");
 
-pathBtn.onclick = () => {
+/* Button to open file explorer to set custom log path for overlay to read */
+const customPathSubmitter = () => {
     var options = {
         title: 'Select the latest.log file you wish to use.',
         buttonLabel: 'Select',
@@ -61,6 +59,7 @@ pathBtn.onclick = () => {
     });
 }
 
+/* Input field for manually setting API key */
 const apiKeySubmitter = async () => {
     var key = document.getElementById("apiKeyField").value
     if (!key) return;
@@ -73,6 +72,7 @@ const apiKeySubmitter = async () => {
     }
 }
 
+/* Toggle for auto who */
 var autoWho = readFromStorage("autoWho")
 if (!autoWho || autoWho == false) document.getElementById("whoSwitchOption").checked = false
 else document.getElementById("whoSwitchOption").checked = true
@@ -84,6 +84,7 @@ const whoSwitch = () => {
     else writeToStorage("autoWho", false)
 }
 
+/* Toggle for auto hide */
 var autoHide = readFromStorage("autoHide")
 if (autoHide == undefined || autoHide == true) document.getElementById("hideSwitchOption").checked = true
 else document.getElementById("hideSwitchOption").checked = false
@@ -95,6 +96,7 @@ const hideSwitch = () => {
     else writeToStorage("autoHide", false)
 }
 
+/* Drop down menu for picking what client logs to use */
 var path = readFromStorage("path")
 if (path) {
     if (path.includes("blclient")) {
@@ -139,6 +141,7 @@ const clientSwitcher = () => {
     })
 }
 
+/* Drop down menu for switching between what statistic to sort players by */
 var sortMode = readFromStorage("sort") || "threat"
 
 if (sortMode == "threat") document.getElementById("threatOption").selected = "selected"
@@ -154,6 +157,8 @@ const sortSwitcher = () => {
     tableUpdater()
 }
 
+
+/* Drop down menu for switching between game modes */
 var mode = readFromStorage("mode") || "overall"
 document.getElementById(`${mode}Option`).selected = "selected"
 
