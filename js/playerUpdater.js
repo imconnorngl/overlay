@@ -27,12 +27,28 @@ const readLogFile = async () => {
     }
 }
 
+/*
+&r&b[329✫] &b[MVP&0+&b] ugcodrr&f&r&f: a&r
+
+&r&-[-✫] &b[MVP&0+&b] 
+*/
+
 const processLine = async line => {
     if (!line.includes('[Client thread/INFO]: [CHAT]')) return;
     if (line.includes("spooked into the lobby!") || line.includes("Sending you to mini")) {
         if (lobbyMode == false) {
             resetPlayers()
             resetCache()
+        } else if (lobbyMode == true && line.includes("spooked into the lobby!")) {  
+            var player = line.split("spooked into the lobby!")
+            player = player[0].split(" [CHAT] ")
+            player = player[1].split(" ")
+
+            player = player[player.length == 5 ? 3 : 1]
+            player = player.replace(/�[0-9A-FK-OR]/gmi, '');
+
+            addPlayer(player)
+            setTimeout(() => removePlayer(player), 10000);
         }
 
         var autoWhoToggle = readFromStorage("autoWho")
@@ -77,14 +93,33 @@ const processLine = async line => {
             if (player.includes(" ")) player = player.split(" ")[player.split(" ").length - 1]
             addPlayer(player) 
         })
-    }else if (line.includes(" Can't find a player by the name of '.hide'")) {
+    }else if (line.includes(" Can't find a player by the name of '.hide'") || line.includes(" Can't find a player by the name of '.h'")) {
         hideWindow()
-    } else if (line.includes(" Can't find a player by the name of '.show'")) {
+    } else if (line.includes(" Can't find a player by the name of '.show'") || line.includes(" Can't find a player by the name of '.s'")) {
         showWindow()
+    } else if (line.includes(" Can't find a player by the name of '.clear'") || line.includes(" Can't find a player by the name of '.c'")) {
+        resetPlayers()
     } else if (line.includes(" Can't find a player by the name of '")) {
         var player = line.split(" Can't find a player by the name of '")[1]
         player = player.slice(1, -1)
         addPlayer(player)
+    } else if (line.match(/(\d*?)\?/) && lobbyMode) {
+        var player = line.split(" [CHAT] ")[1]
+        player = line.split("?] ")[1]
+
+        if (player) {
+            player = player.split("�f: ")[0]
+            player = player.split(" ")
+
+            if (player[0].includes("�7")) {
+                player = player[0].replace(/�7/g, "")
+                player = player.replace(":", "")
+            }
+            else player = player[1]
+
+            addPlayer(player)
+            setTimeout(() => removePlayer(player), 15000)
+        }
     } else if (line.includes("[CHAT] Your new API key is ")) {
         var key = line.split("[CHAT] Your new API key is ")[1];
         document.getElementById("apiKeyField").value = key;
