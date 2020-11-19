@@ -16,4 +16,3 @@ const updateAlert = (title, body, version) => {
             </div>
         </div>`
 };
-    

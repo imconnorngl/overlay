@@ -1,4 +1,5 @@
 const fetch = require('node-fetch')
+const schedule = require('node-schedule');
 
 var keyCount;
 var keyMax;
@@ -6,7 +7,7 @@ var keyMax;
 const addRequest = () => {
     if (keyCount != undefined && keyMax != undefined) {
         keyCount++
-        document.getElementById("creditFooter").innerHTML = `Requests: ${keyCount}/${keyMax}<br>${credits}`
+        document.getElementById("creditFooter").innerHTML = `v${vers || [UNKNOWN]} | Requests: ${keyCount}/${keyMax}<br>${credits}`
     }
 }
 
@@ -21,26 +22,29 @@ const getKey = async (key) => {
 
 const getPlayer = async (user) => {
     addRequest()
+    if (keyCount >= keyMax + 5) return { throttle: true, username: user }
     return new Promise(async resolve => {
         const requestTime = Date.now()
         const data = await fetch(`https://api.hypixel.net/player?key=${readFromStorage("api")}&name=${user}`)
-        try { var body = await data.json() } catch { resolve({ outage: true }) }
-        if (body.throttle) resolve({ throttle: true })
-        if (body.cause == "Invalid API key") resolve({ invalid: true })
-        if (body.success == false || body.player == null || !body.player.displayname) resolve({ exists: false })
+        try { var body = await data.json() } catch { resolve({ outage: true, username: user }) }
+        if (body.throttle) resolve({ throttle: true, username: user })
+        if (body.cause == "Invalid API key") resolve({ invalid: true, username: user })
+        if (body.success == false || body.player == null || !body.player.displayname) resolve({ exists: false, username: user })
         else {
             var player = body.player
             var bedwars = player.stats ? player.stats.Bedwars || {} : {}
             var rank = getRank(player)
             var plusColor = getPlusColor(rank, player.rankPlusColor)
             var formattedRank = getFormattedRank(rank, plusColor.mc)
+            var origUsername = user
 
             resolve({
                 uuid: player.uuid,
                 username: player.displayname,
+                inputtedUsername: origUsername,
                 displayName: `${formattedRank}${player.displayname}`,
                 chat: player.channel,
-    
+
                 rank: rank,
                 plus: plusColor,
 
@@ -183,36 +187,62 @@ const getPlayer = async (user) => {
                         }
                     }
                 },
-
                 requestedAt: requestTime
             })
         }
     })
 }
 
+const getGuild = async (uuid) => {
+    addRequest()
+    if (keyCount >= keyMax + 5) return { throttle: true }
+    return new Promise(async resolve => {
+        const requestTime = Date.now()
+        const data = await fetch(`https://api.hypixel.net/guild?key=${readFromStorage("api")}&player=${uuid}`)
+        try { var body = await data.json() } catch { resolve({ outage: true }) }
+        if (body.throttle) resolve({ throttle: true })
+        if (body.cause == "Invalid API key") resolve({ invalid: true })
+        if (body.success == false || body.guild == null || !body.guild.name) resolve({ exists: false })
+        else {
+            const getGuildTagColor = color => ({ "DARK_AQUA": { hex: "#00AAAA", mc: "§3" }, "DARK_GREEN": { hex: "#00AA00", mc: "§2" }, "YELLOW": { hex: "#FFFF55", mc: "§e" }, "GOLD": { hex: "#FFAA00", mc: "§6" } }[color] || { hex: "#AAAAAA", mc: "§7" })
+
+            body.guild.mcColor = getGuildTagColor(body.guild.tagColor);
+
+            resolve(body.guild)
+        }
+    })
+}
+
 /* Randomly assign which order the credits are in on run */
-var authors = ["imconnorngl", "VideoGameKing"]
+var authors = ["imconnorngl", "videogameking", "ugcodrr"]
 var authorRandom = Math.round(Math.random());
-var credits = `Made by ${authors[authorRandom]} & ${authors.find(a => a != authors[authorRandom])} © Statsify Inc.`
+var credits = `Made by ${authors[authorRandom]}, ${authors.filter(a => a != authors[authorRandom])[0]} & ${authors.filter(a => a != authors[authorRandom])[1]} © Statsify Inc.`
 
 /* API Counter */
 var api = readFromStorage("api")
+var vers = readFromStorage("version")
 
 if (api) {
+    
+    const form =  document.getElementById("apiKeyField");
+    
     document.getElementById("apiKeyField").value = api
 
     getKey(api).then(keyStatus => {
         if (keyStatus.valid == true) {
             keyCount = 0
-            keyMax = keyStatus.max
-    
-            setInterval(() => {
+            keyMax = keyStatus.max || 120
+            
+            schedule.scheduleJob('1 * * * * *', function() {
                 keyCount = 0
-                document.getElementById("creditFooter").innerHTML = `Requests: ${keyCount}/${keyMax}<br>${credits}`
-            }, 60000)
-            document.getElementById("creditFooter").innerHTML = `Requests: ${keyCount}/${keyMax}<br>${credits}`
+                //player.throttle
+                document.getElementById("creditFooter").innerHTML = `v${vers || "0.0.0"} | Requests: ${keyCount}/${keyMax}<br>${credits}`
+            });
+
+            document.getElementById("creditFooter").innerHTML = `v${vers || "0.0.0"} | Requests: ${keyCount}/${keyMax}<br>${credits}`
         }
     })
 } else {
-    document.getElementById("creditFooter").innerHTML = `Requests: N/A<br>${credits}`
+    const form =  document.getElementById("apiKeyField");
+    document.getElementById("creditFooter").innerHTML = `v${vers || "0.0.0"} | ${credits}`
 }

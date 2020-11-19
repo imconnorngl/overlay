@@ -1,12 +1,29 @@
 const fs = require('fs');
 var ks = require('node-key-sender');
 
-ks.setOption('globalDelayPressMillisec', 18);
+ks.setOption('globalDelayPressMillisec', 20);
 
 var mostRecentSize = 0
 var fileLocation;
 var timesRead = 0
 var lobbyMode = false;
+var previousLines = [];
+var autoWhoed = false;
+
+const autoTypeWho = () => {
+    var autoWhoToggle = readFromStorage("autoWho")
+    lobbyMode = false;
+    autoWhoed = true;
+    if (autoWhoToggle && autoWhoToggle == true) {
+        setTimeout(() => {
+            ks.startBatch()
+                .batchTypeKey('slash')
+                .batchTypeText('who')
+                .batchTypeKey('enter')
+                .sendBatch();
+        }, 750)
+    }
+}
 
 const readLogFile = async () => {
     var newSize = fs.fstatSync(fileLocation).size
@@ -27,51 +44,27 @@ const readLogFile = async () => {
     }
 }
 
-/*
-&r&b[329✫] &b[MVP&0+&b] ugcodrr&f&r&f: a&r
-
-&r&-[-✫] &b[MVP&0+&b] 
-*/
-
+// line.includes("[CHAT]                                      ")
 const processLine = async line => {
     if (!line.includes('[Client thread/INFO]: [CHAT]')) return;
-    if (line.includes("spooked into the lobby!") || line.includes("Sending you to mini")) {
+
+    if (line.includes("[CHAT]                                      ")) autoWhoed = false;
+    else if (line.includes("Sending you to mini") || line.includes("[CHAT]                                      ")) {
+        autoWhoed = false;
         if (lobbyMode == false) {
             resetPlayers()
             resetCache()
-        } else if (lobbyMode == true && line.includes("spooked into the lobby!")) {  
-            var player = line.split("spooked into the lobby!")
-            player = player[0].split(" [CHAT] ")
-            player = player[1].split(" ")
-
-            player = player[player.length == 5 ? 3 : 1]
-            player = player.replace(/�[0-9A-FK-OR]/gmi, '');
-
-            addPlayer(player)
-            setTimeout(() => removePlayer(player), 10000);
-        }
-
-        var autoWhoToggle = readFromStorage("autoWho")
-        if (line.includes("Sending you to mini")) {
-            lobbyMode = false;
-            if(autoWhoToggle && autoWhoToggle == true) {
-                setTimeout(() => {
-                    ks.startBatch()
-                    .batchTypeKey('slash')
-                    .batchTypeText('who')
-                    .batchTypeKey('enter')
-                    .sendBatch();
-                }, 600)    
-            }
         }
     } else if (line.includes(" has joined (")) {
-        lobbyMode = false;
         var player = line.split(" [CHAT] ")[1].split(" has joined")[0]
         addPlayer(player)
+        lobbyMode = false;
+        if (autoWhoed == false) autoTypeWho()
     } else if (line.includes(" has quit!")) {
         lobbyMode = false;
         var player = line.split(" [CHAT] ")[1].split(" has quit!")[0]
         removePlayer(player)
+        if (autoWhoed == false) autoTypeWho()
     } else if (line.includes(" ONLINE: ")) {
         var players = line.split(" [CHAT] ONLINE: ")[1].split(", ")
         resetPlayers()
@@ -81,50 +74,95 @@ const processLine = async line => {
     } else if (line.includes("Online Players(")) {
         lobbyMode = true;
         resetPlayers()
-        resetCache()
-        
+
         var players = line.split(" [CHAT] Online Players(");
         players.shift()
 
         players = players[0].split(", ")
         players.shift()
 
-        players.forEach(player => {
-            if (player.includes(" ")) player = player.split(" ")[player.split(" ").length - 1]
-            addPlayer(player) 
+        players.forEach((player, index) => {
+            setTimeout(() => {
+                if (player.includes(" ")) player = player.split(" ")[player.split(" ").length - 1]
+                addPlayer(player)
+            }, index * 25)
         })
-    }else if (line.includes(" Can't find a player by the name of '.hide'") || line.includes(" Can't find a player by the name of '.h'")) {
+    } else if (line.toLowerCase().includes(" can't find a player by the name of '.hide'") || line.toLowerCase().includes(" can't find a player by the name of '.h'")) {
         hideWindow()
-    } else if (line.includes(" Can't find a player by the name of '.show'") || line.includes(" Can't find a player by the name of '.s'")) {
+    } else if (line.toLowerCase().includes(" can't find a player by the name of '.show'") || line.toLowerCase().includes(" can't find a player by the name of '.s'")) {
         showWindow()
-    } else if (line.includes(" Can't find a player by the name of '.clear'") || line.includes(" Can't find a player by the name of '.c'")) {
+    } else if (line.toLowerCase().includes(" can't find a player by the name of '.clear'") || line.toLowerCase().includes(" can't find a player by the name of '.c'")) {
         resetPlayers()
+        resetCache()
     } else if (line.includes(" Can't find a player by the name of '")) {
         var player = line.split(" Can't find a player by the name of '")[1]
-        player = player.slice(1, -1)
+        addPlayer(parseCompactChat(player, ".", '\''))
+    } else if (readFromStorage("partyEnabled") && line.split(" [CHAT] ")[1].match(/\S*(?=( to the party! They have 60 seconds to accept.))/)) { // Invite (In Party)
+        var player = line.split(" [CHAT] ")[1].match(/\S*(?=( to the party! They have 60 seconds to accept.))/)[0];
+
         addPlayer(player)
-    } else if (line.match(/(\d*?)\?/) && lobbyMode) {
+        setTimeout(() => removePlayer(player), 15000)
+    } else if (readFromStorage("partyEnabled") && line.split(" [CHAT] ")[1].match(/\S*(?=( party!))/)) { // You Joining Party (Out of Party)
+        var player = line.split(" [CHAT] ")[1].match(/\S*(?=('))/)[0];
+
+        addPlayer(player)
+        setTimeout(() => removePlayer(player), 15000)
+    } else if (readFromStorage("partyEnabled") && line.split(" [CHAT] ")[1].match(/\S*(?=( joined the party.))/)) { // Someone Joining Party (Out of Party)
+        var player = line.split(" [CHAT] ")[1].match(/\S*(?=( joined the party.))/)[0];
+
+        addPlayer(player)
+        setTimeout(() => removePlayer(player), 15000)
+    } else if (readFromStorage("partyEnabled") && line.split(" [CHAT] ")[1].match(/Party Leader: (\S.*)/) && line.split(" [CHAT] ")[1].match(/Party Leader: (\S.*)/).length == 2) { // Party List (Leader)
+        var player = line.split(" [CHAT] ")[1].match(/(?<=\: )(.*?)(?= \?)/)
+        player = player[0].split(" ");
+
+        addPlayer(player[player.length - 1]);
+        setTimeout(() => removePlayer(player[player.length - 1]), 15000)
+    } else if (readFromStorage("partyEnabled") && line.split(" [CHAT] ")[1].match(/Party Moderators: (\S.*)/) && line.split(" [CHAT] ")[1].match(/Party Moderators: (\S.*)/).length == 2) { // Party List (Moderators)
+        var players = line.split(" [CHAT] ")[1].replace("Party Moderators: ", "").replace(/\[(.*?)\]/g, '');
+        players = players.split(" ?");
+        players.pop()
+        players.forEach(user => {
+            addPlayer(user.replace(/ /g, ""))
+            setTimeout(() => removePlayer(user.replace(/ /g, "")), 15000)
+        })
+    } else if (readFromStorage("partyEnabled") && line.split(" [CHAT] ")[1].match(/Party Members: (\S.*)/) && line.split(" [CHAT] ")[1].match(/Party Members: (\S.*)/).length == 2) { // Party List (Members)
+        var players = line.split(" [CHAT] ")[1].replace("Party Members: ", "").replace(/\[(.*?)\]/g, '');
+        players = players.split(" ?");
+        players.pop()
+        players.forEach(user => {
+            addPlayer(user.replace(/ /g, ""))
+            setTimeout(() => removePlayer(user.replace(/ /g, "")), 15000)
+        })
+    } else if (readFromStorage("partyEnabled") && line.split(" [CHAT] ")[1].match(/You'll be partying with: (\S.*)/)) { // Party Group Join (Out of Party)
+        var players = line.split(" [CHAT] ")[1].replace("You'll be partying with: ", '').replace(/and \d* other players!/, "").replace(/\[(.*?)\]/g, '');
+        players = players.split(", ");
+
+        players.forEach(user => {
+            addPlayer(user.replace(/ /g, ""))
+            setTimeout(() => removePlayer(user.replace(/ /g, "")), 15000)
+        })
+    } else if (line.split(" [CHAT] ")[1].match(/\S+(?=\:)/) && (readFromStorage("lobbyEnabled") || false) == true) {
+        if (line.split(" [CHAT] ")[1].includes("�2Guild > ") || line.split(" [CHAT] ")[1].includes("�9Party �8> ") || !line.split(" [CHAT] ")[1].replace(/�(\S)/g, '').includes("?] ")) return
         var player = line.split(" [CHAT] ")[1]
-        player = line.split("?] ")[1]
+        player = player.match(/\S+(?=\:)/);
+        player = player[0].replace(/�(\S)/g, '');
 
-        if (player) {
-            player = player.split("�f: ")[0]
-            player = player.split(" ")
-
-            if (player[0].includes("�7")) {
-                player = player[0].replace(/�7/g, "")
-                player = player.replace(":", "")
-            }
-            else player = player[1]
-
-            addPlayer(player)
-            setTimeout(() => removePlayer(player), 15000)
-        }
+        addPlayer(player)
+        setTimeout(() => removePlayer(player), 15000)
     } else if (line.includes("[CHAT] Your new API key is ")) {
         var key = line.split("[CHAT] Your new API key is ")[1];
         document.getElementById("apiKeyField").value = key;
         writeToStorage("api", key);
     }
+}
+
+const parseCompactChat = (line, startChar, endChar) => {
+    newLine = line;
+    newLine = newLine.split(endChar)[0]
+    newLine = newLine.replace(startChar, "")
+
+    return newLine
 }
 
 const readLogs = () => {
@@ -135,35 +173,41 @@ const readLogs = () => {
 }
 
 const getFileAccessDate = path => {
-    try { 
-        var stats = fs.statSync(path) 
-    } catch { 
-        return null 
+    try {
+        var stats = fs.statSync(path)
+    } catch {
+        return null
     }
 
     if (!stats) return null
     return stats.mtimeMs
 }
 
-if (readFromStorage("path")) readLogs()
-else{
+if (readFromStorage("path")) {
+    if (readFromStorage("path") == `${app.getPath("home").replace(/\\/g, "\/")}/.lunarclient/offline/files/1.8.9/logs/latest.log`) {
+        writeToStorage("path", `${app.getPath("home").replace(/\\/g, "\/")}/.lunarclient/offline/files/1.8/logs/latest.log`)
+    }
+
+    readLogs()
+}
+else {
     var logFiles = [
-        { name: "lunar", path: `${app.getPath("home").replace(/\\/g, "\/")}/.lunarclient/offline/files/1.8.9/logs/latest.log` },
+        { name: "lunar", path: `${app.getPath("home").replace(/\\/g, "\/")}/.lunarclient/offline/files/1.8/logs/latest.log` },
         { name: "vanilla", path: `${app.getPath("home").replace(/\\/g, "\/")}/AppData/Roaming/.minecraft/logs/latest.log` },
-        { name: "badlion", path: `${app.getPath("home").replace(/\\/g, "\/")}/AppData/Roaming/.minecraft/logs/blclient/minecraft/latest.log` }, 
+        { name: "badlion", path: `${app.getPath("home").replace(/\\/g, "\/")}/AppData/Roaming/.minecraft/logs/blclient/minecraft/latest.log` },
         { name: "pvplongue", path: `${app.getPath("home").replace(/\\/g, "\/")}/AppData/Roaming/.pvplounge/logs/latest.log` }
     ]
 
     logFiles = logFiles.sort((a, b) => {
         b.time = getFileAccessDate(a.path) || null
-        a.time = getFileAccessDate(b.path)  || null
-        
+        a.time = getFileAccessDate(b.path) || null
+
         return a.time - b.time
     })
 
     if (logFiles[0].time) {
         writeToStorage("path", logFiles[0].path)
-        switch(logFiles[0].name) {
+        switch (logFiles[0].name) {
             case "lunar":
                 document.getElementById("lcOption").selected = "selected"
                 break;
@@ -182,4 +226,3 @@ else{
 
     } else toggleMenu()
 }
-

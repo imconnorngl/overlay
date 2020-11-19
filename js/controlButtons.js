@@ -3,13 +3,15 @@ const { remote } = electron
 
 const closeWindow = () => {
     window.close();
-    // Fully close/terminate the process so it doesnt run in background 
     proccess.exit()
 }
 
 var maximized = false;
 
 const maximizeWindow = () => {
+    document.getElementById("body").classList.remove("hidden");
+    body.style.backgroundColor = `rgba(0, 0, 0, ${readFromStorage("opacity") || 0.4})`
+    header.style.backgroundColor = `rgba(0, 0, 0, ${(readFromStorage("opacity") || 0.4) + 0.05})`
     var window = remote.getCurrentWindow()
     if(!maximized) {
         window.maximize()
@@ -27,9 +29,20 @@ const minimizeWindow = () => {
 }
 
 const hideWindow = () => {
-    document.getElementById("body").classList.add("hidden");
+    if (readFromStorage("toggleNotifs")) {
+        const hideNotif = new Notification('Statsify', {
+            body: 'Overlay has been hidden.\nType \'/w .show\' to show it again.',
+            icon: './img/statsify.png',
+            silent: true
+         });
+    }
+
+    var window = remote.getCurrentWindow();
+    window.hide() 
+
 }
 
 const showWindow = () => {
-    document.getElementById("body").classList.remove("hidden");
+   var window = remote.getCurrentWindow();
+   if (window.isVisible() == false) window.showInactive()
 }

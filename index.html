@@ -20,17 +20,22 @@
 </head>
 
 <header>
-  <div class="topnav" style="-webkit-app-region: drag;">
-    <a><img src="img/statsify.png"> STATSIFY OVERLAY</a>
+  <div class="topnav" id ="topnav" style="-webkit-app-region: drag;">
+    <a id="header-text"><img src="img/statsify.png"> <span style="color: #498FC7">STATSIFY</span> <span style="color: #D0EDFB">OVERLAY</span></a>
     <img onclick="toggleMenu()" class="settings-icon" style="-webkit-app-region: no-drag" src="img/icons/settings.png"/>
     <img onclick="shell.openExternal('https://statsify.net/discord');" class="discord-icon" style="-webkit-app-region: no-drag" src="img/icons/discord.png"/>
+    <img onclick="openTooltip()" class="info-icon" style="-webkit-app-region: no-drag" src="img/icons/info.png"/>
+    <input class="search" type="text" id="playerSearchField" placeholder="🔍 Input Username" style="-webkit-app-region: no-drag" />
     <div class="topnav buttons">
       <button class="dot yellow-button" style="-webkit-app-region: no-drag; background-color: #FDBC40;" onclick="minimizeWindow()"></button>
       <button class="dot green-button" style="-webkit-app-region: no-drag; background-color: #35C749;" onclick="maximizeWindow()"></button>
       <button class="dot red-button" style="-webkit-app-region: no-drag; background-color: #FC5753;" onclick="closeWindow()"></button>
     </div>
   </div>
+  <div id="infoMessage"></div>
 </header>
+
+<div id="faq-tooltip" class="faq-tooltip hidden"></div>
 
 <div class="menu hidden" id="menu">
   <div id="bannerMessage"><h1>Settings</h1><br></div>
@@ -62,17 +67,52 @@
   <br>
   <input type="text" id="apiKeyField" placeholder="No saved API key" style="-webkit-app-region: no-drag"></input> <button type="submit" style="-webkit-app-region: no-drag" onclick="apiKeySubmitter()">Save</button>
   <br>
+  <div class="rangeSliders" style="-webkit-app-region: no-drag">
+    <p id="opacityValue">Opacity: </p>
+    <input type="range" min="0" max="100" class="rangeSlider" id="opacitySlider">
+  </div>
+  <br>
   <div class="sliders">
     <label class="switch" style="-webkit-app-region: no-drag">
       <input type="checkbox" id="whoSwitchOption" onclick="whoSwitch()">
       <span class="slider round"></span>
-      <p style="position: relative; left: -120px; top: -15px; width: 120px"><span title="Automatically does /who when joining a game. Use at your own risk." style="-webkit-app-region: no-drag">Auto Who*: </span></p>
+      <p style="position: relative; left: -120px; top: -15px; width: 120px"><span title="Automatically does '/who' when joining a game. Use at your own risk." style="-webkit-app-region: no-drag">Auto Who*: </span></p>
     </label>
     <br>
     <label class="switch" style="-webkit-app-region: no-drag">
       <input type="checkbox" id="hideSwitchOption" onclick="hideSwitch()">
       <span class="slider round"></span>
       <p style="position: relative; left: -120px; top: -15px; width: 120px"><span title="Automatically hides the overlay after 20 seconds of inactivity. Do /who for it to return." style="-webkit-app-region: no-drag">Auto Hide*: </span></p>
+    </label>
+    <br>
+    <label class="switch" style="-webkit-app-region: no-drag">
+      <input type="checkbox" id="guildSwitchOption" onclick="guildSwitch()">
+      <span class="slider round"></span>
+      <p style="position: relative; left: -120px; top: -15px; width: 120px"><span title="Adds guild related data to the overlay. [USES LOTS OF API REQUESTS]" style="-webkit-app-region: no-drag">Guild Tag*: </span></p>
+    </label>
+    <br>
+    <label class="switch" style="-webkit-app-region: no-drag">
+      <input type="checkbox" id="lobbyChatOption" onclick="lobbySwitch()">
+      <span class="slider round"></span>
+      <p style="position: relative; left: -129px; top: -15px; width: 125px"><span title="Adds the stats of people who talk in chat. Useful for finding parties in lobby 1." style="-webkit-app-region: no-drag">Lobby Chat*: </span></p>
+    </label>
+    <br>
+    <label class="switch" style="-webkit-app-region: no-drag">
+      <input type="checkbox" id="partyStuffOption" onclick="partySwitch()">
+      <span class="slider round"></span>
+      <p style="position: relative; left: -125px; top: -15px; width: 125px"><span title="Adds the stats of people who party you, join your party, in your party, etc. Basically checks the stats of everything party related." style="-webkit-app-region: no-drag">Party Info*: </span></p>
+    </label>
+    <br>
+    <label class="switch" style="-webkit-app-region: no-drag">
+      <input type="checkbox" id="resizeOption" onclick="autoResize()">
+      <span class="slider round"></span>
+      <p style="position: relative; left: -185px; top: -15px; width: 180px"><span title="[! BETA !] Changes window height depending on how many players." style="-webkit-app-region: no-drag">Auto Scale [BETA]*: </span></p>
+    </label>
+    <br>
+    <label class="switch" style="-webkit-app-region: no-drag">
+      <input type="checkbox" id="doNotDisturb" onclick="doNotDisturb()">
+      <span class="slider round"></span>
+      <p style="position: relative; left: -155px; top: -15px; width: 150px"><span title="Toggles notifications from the overlay, ex: hide notification" style="-webkit-app-region: no-drag">Notifications*: </span></p>
     </label>
   </div>
   <footer id="creditFooter" style="-webkit-app-region: no-drag"></footer>           
@@ -82,17 +122,17 @@
   <table id="playerTable">
     <tr>
       <th></th>
-      <th class="white">PLAYER</th>
-      <th class="white">TAG</th>
-      <th class="white">WS</th>
-      <th class="white">WINS</th>
-      <th class="white">FINALS</th>
-      <th class="white">FKDR</th>
-      <th class="white">WLR</th>
-      <th class="white">BBLR</th>
+      <th class="white shadow">PLAYER</th>
+      <th class="white shadow">TAG</th>
+      <th class="white shadow">WS</th>
+      <th class="white shadow">WINS</th>
+      <th class="white shadow">FINALS</th>
+      <th class="white shadow">FKDR</th>
+      <th class="white shadow">WLR</th>
+      <th class="white shadow">BBLR</th>
     </tr>
   </table>
-  <div id="updateBanner"/>
+  <div id="updateBanner" />
 </body>
 
 <script src="utils/misc.js"></script>
@@ -104,5 +144,6 @@
 <script src="js/controlButtons.js"></script>
 <script src="js/dropdownRelease.js"></script>
 <script src="js/getReleases.js"></script>
+<script src="js/faq.js"></script>
 
 </html>

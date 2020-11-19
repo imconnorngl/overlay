@@ -1,6 +1,6 @@
 @font-face {
   font-family: Minecraft;
-  src: url("./fonts/minecraft-special.ttf");
+  src: url("./fonts/minecraft-special.ttf")
 }
 
 .switch {
@@ -76,7 +76,8 @@ input:checked + .slider:before {
   bottom: 0;
   padding-top: 30px;
   background-color: rgba(0,0,0, 0.79);
-  z-index: 2;
+  z-index: 5;
+  overflow-y: scroll;
 }
 
 .menu button {
@@ -104,7 +105,8 @@ input:checked + .slider:before {
   font: 400 12px/16px "Poppins", sans-serif;
   width: 50%;
   border: none;
-  color: white;
+  text-shadow: 0 0 32px white;
+  color: transparent;
   position: relative;
   text-align: center;
   border: 2px solid #aaa;
@@ -113,6 +115,11 @@ input:checked + .slider:before {
   padding: 10px;
   font-size: 15px;
   outline: none;
+}
+
+.menu input:focus {
+  text-shadow: none;
+  color: #FFF;
 }
 
 .menu button[type="submit"] {
@@ -139,12 +146,12 @@ input:checked + .slider:before {
 }
 
 footer{
-  position:absolute;
   bottom:0;
-  width:100%;
-  height:50px;
+  width: 100%;
+  height: 50px;
   color: #aaa;
 }
+
 .error {
   padding-top: .75rem;
   padding-bottom: .75rem;
@@ -252,7 +259,7 @@ option{
   display: inline-block;
   font-weight: 80;
   text-align: left;
-  z-index: 1;
+  z-index: 2;
 }
 
 .tooltip:hover .tooltiptext {
@@ -305,12 +312,13 @@ header {
 .skull {
   display: inline-block;
   margin-left: 2px;
-  margin-top: 2px;
-  height: 16px; 
-  width: 16px; 
+  margin-top: -3px;
+  height: 16px;
+  width: 16px;
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
+  filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.3));
 }
 
 .topnav {
@@ -335,7 +343,7 @@ header {
   margin-top: 3px;
   display: inline-block;
   height: 100%;
-  
+  filter: drop-shadow(2px 2px 0px #242424);
 }
 
 .settings-icon {
@@ -347,13 +355,27 @@ header {
 }
 
 .settings-icon:hover {
-  animation: spin-animation 1.5s infinite;
+  animation: spin-animation 1.44s infinite;
   display: inline-block;
+  cursor: pointer;
+}
+
+.info-icon {
+  margin: 5px;
+  margin-left: 2px;
+  margin-top: 0px;
+  width: 16px;
+  height: 16px;
+}
+
+.info-icon:hover {
+  display: inline-block;
+  cursor: pointer;
 }
 
 @keyframes spin-animation {
   0% {
-    trransform: rotate(0deg)
+    trransform: rotate(359deg)
   }
   100% {
     transform: rotate(359deg)
@@ -367,7 +389,17 @@ header {
   width: 16px;
   height: 16px;
 }
- 
+
+.discord-icon:hover {
+  display: hidden;
+  background-size: 100% 100%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
 .topnav a img {
   padding-bottom: 3px;
   padding-left: 3px;
@@ -378,24 +410,27 @@ header {
 .yellow-button:hover {
   border-color: #DE9F34;
   border-style: solid;
-  border-width: 1px;
+  border-width: 3px;
+  filter: drop-shadow(2px 2px 0px #000000);
 }
 
 .green-button:hover {
   border-color: #27AA35;
   border-style: solid;
-  border-width: 1px;
+  border-width: 3px;
+  filter: drop-shadow(2px 2px 0px #000000);
 }
 
 .red-button:hover {
   border-color: #DF4744;
   border-style: solid;
-  border-width: 1px;
+  border-width: 3px;
+  filter: drop-shadow(2px 2px 0px #000000);
 }
 
 .buttons {
-  padding-top: 5px;
-  padding-right: 5px;
+  padding-top: 3px;
+  padding-right: 3px;
   text-align: right;
   text-decoration: none;
   background-color: rgba(0, 0, 0, 0);
@@ -421,7 +456,6 @@ table {
 }
 
 td, th {
-  
   border: none;
   font-family: Minecraft;
   padding: 2px;
@@ -451,7 +485,7 @@ th {
 }
 
 .black.shadow {
-  text-shadow: 1.6px 1.6px #000000;
+  text-shadow: 2px 2px #000000;
 }
 
 .dark_blue {
@@ -459,7 +493,7 @@ th {
 }
 
 .dark_blue.shadow {
-  text-shadow: 1.6px 1.6px #00002A;
+  text-shadow: 2px 2px #00002A;
 }
 
 .dark_green {
@@ -467,7 +501,7 @@ th {
 }
 
 .dark_green.shadow {
-  text-shadow: 1.6px 1.6px #002A00;
+  text-shadow: 2px 2px #002A00;
 }
 
 .dark_aqua {
@@ -475,7 +509,7 @@ th {
 }
 
 .dark_aqua.shadow {
-  text-shadow: 1.6px 1.6px #002A2A;
+  text-shadow: 2px 2px #002A2A;
 }
 
 .dark_red {
@@ -483,7 +517,7 @@ th {
 }
 
 .dark_red.shadow {
-  text-shadow: 1.6px 1.6px #2A0000;
+  text-shadow: 2px 2px #2A0000;
 }
 
 .dark_purple {
@@ -491,7 +525,7 @@ th {
 }
 
 .dark_purple.shadow {
-  text-shadow: 1.6px 1.6px #2A002A;
+  text-shadow: 2px 2px #2A002A;
 }
 
 .gold {
@@ -499,7 +533,7 @@ th {
 }
 
 .gold.shadow {
-  text-shadow: 1.6px 1.6px #2A2A00;
+  text-shadow: 2px 2px #2A2A00;
 }
 
 .gray {
@@ -507,7 +541,7 @@ th {
 }
 
 .gray.shadow {
-  text-shadow: 1.6px 1.6px #2A2A2A;
+  text-shadow: 2px 2px #2A2A2A;
 }
 
 .dark_gray {
@@ -515,7 +549,7 @@ th {
 }
 
 .dark_gray.shadow {
-  text-shadow: 1.6px 1.6px #151515;
+  text-shadow: 2px 2px #151515;
 }
 
 .blue {
@@ -523,7 +557,7 @@ th {
 }
 
 .blue.shadow {
-  text-shadow: 1.6px 1.6px #15153F;
+  text-shadow: 2px 2px #15153F;
 }
 
 .green {
@@ -531,7 +565,7 @@ th {
 }
 
 .green.shadow {
-  text-shadow: 1.6px 1.6px #153F15;
+  text-shadow: 2px 2px #153F15;
 }
 
 .aqua {
@@ -539,7 +573,7 @@ th {
 }
 
 .aqua.shadow {
-  text-shadow: 1.6px 1.6px #153F3F;
+  text-shadow: 2px 2px #153F3F;
 }
 
 .red {
@@ -547,7 +581,7 @@ th {
 }
 
 .red.shadow {
-  text-shadow: 1.6px 1.6px #3F1515;
+  text-shadow: 2px 2px #3F1515;
 }
 
 .light_purple {
@@ -555,7 +589,7 @@ th {
 }
 
 .light_purple.shadow {
-  text-shadow: 1.6px 1.6px #3F153F;
+  text-shadow: 2px 2px #3F153F;
 }
 
 .yellow {
@@ -563,7 +597,7 @@ th {
 }
 
 .yellow.shadow {
-  text-shadow: 1.6px 1.6px #3F3F15;
+  text-shadow: 2px 2px #3F3F15;
 }
 
 .white {
@@ -571,7 +605,7 @@ th {
 }
 
 .white.shadow {
-  text-shadow: 1.6px 1.6px #3F3F3F;
+  text-shadow: 2px 2px #3F3F3F;
 }
 
 .bold {
@@ -621,7 +655,6 @@ th {
     background-color: rgba(22, 22, 22, 0.7);
 }
 
-
 .update-header {
   background-color: rgba(0, 0, 0, 0.4);
   border-bottom: 2px solid rgba(33, 33, 33, 0.7);
@@ -658,4 +691,161 @@ th {
   border-bottom-right-radius: 10px;
 
   padding: 5px;
+}
+
+.alert {
+  font-family: "Poppins", sans-serif;
+  width: 60%;
+  margin: auto;
+  margin-top: 5%;
+  border-color: rgba(33, 33, 33, 0.7);
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 10px;
+  background-color: rgba(22, 22, 22, 0.7);
+}
+
+.alertBanner {
+font-family: "Poppins", sans-serif;
+width: 60%;
+margin: auto;
+margin-top: 5%;
+border-color: rgba(33, 33, 33, 0.7);
+border-width: 2px;
+border-style: solid;
+border-radius: 10px;
+background-color: rgba(22, 22, 22, 0.7);
+}
+
+.alert-header {
+background-color: rgba(0, 0, 0, 0.4);
+border-bottom: 2px solid rgba(33, 33, 33, 0.7);
+border-top-left-radius: 10px;
+border-top-right-radius: 10px;
+padding: 10px;
+width: 100%;
+font-size: 14px;
+font-weight: bold;
+display: inline-block;
+vertical-align: middle;
+margin-bottom: 10px;
+} 
+
+.alert-header img {
+  float: right;
+  width: 16;
+  height: 16;
+} 
+
+.alert-content {
+padding: 10px;
+font-size: 14px;
+}
+
+.alert img {
+  padding-top: .25rem;
+  padding-bottom: .25rem;
+  width: 16;
+  height: 16;
+}
+
+.alert-footer {
+background-color: rgba(0, 0, 0, 0.4);
+border-bottom: 2px solid rgba(33, 33, 33, 0.7);
+border-bottom-left-radius: 10px;
+border-bottom-right-radius: 10px;
+
+padding: 5px;
+}
+
+.username {
+  width: 50%;
+  height: 40px;
+  -webkit-appearance: none;
+  border-radius: 5px;
+  z-index: 100;
+}
+
+.rangeSliders input {
+  margin: auto;
+}
+
+.rangeSlider {
+  width: 50%;
+  height: 40px;
+  -webkit-appearance: none;
+  border-radius: 5px;
+  background-color: #ff0000;
+  box-shadow: insert 0 3px 18px rgba(255, 255, 0, 0.6);
+  z-index: 100;
+}
+
+.rangeSlider::-webkit-slider-runnable-track {
+  width: 50%;
+  background-color: #ebe2e2;
+  box-shadow: 10px 10px #000000 insert;
+  height: 10px
+}
+
+.rangeSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  
+  margin-top: -3px;
+  width: 15px;
+  height: 15px;
+  background-color:rgba(255, 255, 255, 0.95);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.search {
+  font-family: Minecraft;
+  text-align: left;
+  font-size: 12px;
+
+  float: right;
+  margin-top: 4px;
+  margin-right: 70px;
+  height: 75%;
+
+  padding: 10px;
+
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 20px;
+  border-color: rgba(255, 255, 255, 0.3);
+  border-width: 2px;
+  border-style: solid;
+
+  outline: none;
+  z-index: 1;
+}
+
+.search:focus {
+  border-color: rgba(255, 255, 255, 1);
+}
+
+.faq-tooltip {
+  width: 80%;
+  background-color: rgba(22, 22, 22, 0.7);
+ 
+  border-color: rgba(33, 33, 33, 0.7);
+  border-radius: 25px;
+  border-style: solid;
+  border-width: 2px;
+
+  color: #FFF;
+  font-size: 16px;
+  font-family: Minecraft;
+
+  z-index: 30px;
+
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.arrow img {
+  margin: auto;
+  width: 40px;
 }

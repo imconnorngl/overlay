@@ -17,6 +17,7 @@ const readFromStorage = key => {
 
 const deleteFromStorage = key => store.delete(key)
 
+/* In Settings */
 const sendHeader = (body, success = false) => {
     var type = success ? 'success' : 'error'
     document.getElementById("bannerMessage").innerHTML = `
@@ -33,12 +34,23 @@ const sendHeader = (body, success = false) => {
   setTimeout(() => document.getElementById("bannerMessage").innerHTML = `<h1>Settings</h1><br>`, 10000)
 }
 
-const toggleMenu = () => document.getElementById("menu").classList.toggle("hidden");
+const toggleMenu = () => {
+    document.getElementById("menu").classList.toggle("hidden");
+
+    if (!document.getElementById("faq-tooltip").classList.contains("hidden")) 
+    document.getElementById("faq-tooltip").classList.add("hidden");
+
+    if (readFromStorage("resizeEnabled") && (document.getElementById("menu").classList.item(1) || "None") == "None") {
+        var size = { x: 750, y: 460 }
+        var window = remote.getCurrentWindow()
+        window.setSize(size.x, size.y)
+    }
+}
 
 /* Button to open file explorer to set custom log path for overlay to read */
 const customPathSubmitter = () => {
     var options = {
-        title: 'Select the latest.log file you wish to use.',
+        title: 'Select the \'latest.log\' file you wish to use.',
         buttonLabel: 'Select',
         filters: [{ name: 'Log Files', extensions: ['log'] }],
         properties: ['openFile']
@@ -51,8 +63,10 @@ const customPathSubmitter = () => {
             sendHeader("Your log file has been switched. Refreshing for these changes to take place...", true)
             writeToStorage('path', filePath_obj[0].replace(/\\/g, "\/"))
 
-            var window = remote.getCurrentWindow()
-            window.reload()
+            setTimeout(() => {
+                var window = remote.getCurrentWindow()
+                window.reload()
+            }, 3250)
         }
     });
 }
@@ -66,14 +80,32 @@ const apiKeySubmitter = async () => {
         return sendHeader("The key you provided was not a valid API key.", false)
     } else {
         sendHeader("Your API key has been set successfully.", true)
+        document.getElementById("apiKeyField").value = key;
         writeToStorage("api", key)
     }
+}
+
+var searchField = document.getElementById("playerSearchField")
+searchField.addEventListener('keyup', event => {
+    if (event.keyCode === 13) playerSearch()
+})
+
+/* Player Search Bar in Header */
+const playerSearch = async () => {
+    const form = document.getElementById("playerSearchField")
+    var player = form.value
+    if (!player || player.length > 16) return;
+    addPlayer(player)
+    
+    form.value = ""
 }
 
 /* Toggle for auto who */
 var autoWho = readFromStorage("autoWho")
 if (!autoWho || autoWho == false) document.getElementById("whoSwitchOption").checked = false
 else document.getElementById("whoSwitchOption").checked = true
+
+writeToStorage("autoWho", document.getElementById("whoSwitchOption").checked)
 
 const whoSwitch = () => {
     var whoStatus = document.getElementById("whoSwitchOption").checked
@@ -87,11 +119,87 @@ var autoHide = readFromStorage("autoHide")
 if (autoHide == undefined || autoHide == true) document.getElementById("hideSwitchOption").checked = true
 else document.getElementById("hideSwitchOption").checked = false
 
+writeToStorage("autoHide", document.getElementById("hideSwitchOption").checked)
+
 const hideSwitch = () => {
     var hideStatus = document.getElementById("hideSwitchOption").checked
 
     if (hideStatus == true) writeToStorage("autoHide", true)
     else writeToStorage("autoHide", false)
+}
+
+/* Toggle for Guild Tags /* */
+var guildTags = readFromStorage("guildEnabled")
+if (guildTags == undefined || guildTags == true) document.getElementById("guildSwitchOption").checked = true
+else document.getElementById("guildSwitchOption").checked = false
+
+writeToStorage("guildEnabled", document.getElementById("guildSwitchOption").checked)
+
+const guildSwitch = () => {
+    var guildStatus = document.getElementById("guildSwitchOption").checked
+
+    if (guildStatus == true) writeToStorage("guildEnabled", true)
+    else writeToStorage("guildEnabled", false)
+}
+
+/* Toggle for Lobby Chat */
+var lobbyChat = readFromStorage("lobbyEnabled")
+if (!lobbyChat || lobbyChat == false) document.getElementById("lobbyChatOption").checked = false
+else document.getElementById("lobbyChatOption").checked = true
+
+writeToStorage("lobbyEnabled", document.getElementById("lobbyChatOption").checked)
+
+const lobbySwitch = () => {
+    var lobbyStatus = document.getElementById("lobbyChatOption").checked
+
+    if (lobbyStatus == true) writeToStorage("lobbyEnabled", true)
+    else writeToStorage("lobbyEnabled", false)
+}
+
+/* Toggle for Party Info */
+var partyStuff = readFromStorage("partyEnabled")
+if (!partyStuff || partyStuff == false) document.getElementById("partyStuffOption").checked = false
+else document.getElementById("partyStuffOption").checked = true
+
+writeToStorage("partyEnabled", document.getElementById("partyStuffOption").checked)
+
+const partySwitch = () => {
+    var partyInfo = document.getElementById("partyStuffOption").checked
+
+    if (partyInfo == true) writeToStorage("partyEnabled", true)
+    else writeToStorage("partyEnabled", false)
+}
+
+/* Toggle for Auto Resize */
+var autoSize = readFromStorage("resizeEnabled")
+if (!autoSize || autoSize == false) document.getElementById("resizeOption").checked = false
+else document.getElementById("resizeOption").checked = true
+
+writeToStorage("resizeEnabled", document.getElementById("resizeOption").checked)
+
+const autoResize = () => {
+    var resizeStatus = document.getElementById("resizeOption").checked
+
+    if (resizeStatus == true) writeToStorage("resizeEnabled", true)
+    else {
+        var window = remote.getCurrentWindow();
+        window.setSize(750, 460)
+        writeToStorage("resizeEnabled", false)
+    }
+}
+
+/* Toggle for Notifications */
+var dnd = readFromStorage("toggleNotifs")
+if (dnd == undefined || dnd == true) document.getElementById("doNotDisturb").checked = true
+else document.getElementById("doNotDisturb").checked = false
+
+writeToStorage("toggleNotifs", document.getElementById("doNotDisturb").checked)
+
+const doNotDisturb = () => {
+    var notifSetting = document.getElementById("doNotDisturb").checked
+
+    if (notifSetting == true) writeToStorage("toggleNotifs", true)
+    else writeToStorage("toggleNotifs", false)
 }
 
 /* Drop down menu for picking what client logs to use */
@@ -121,7 +229,7 @@ const clientSwitcher = () => {
 
     if (client == "vf") path += "/AppData/Roaming/.minecraft/logs/";
     else if (client == "bc") path += "/AppData/Roaming/.minecraft/logs/blclient/minecraft/";
-    else if (client == "lc") path += "/.lunarclient/offline/files/1.8.9/logs/";
+    else if (client == "lc") path += "/.lunarclient/offline/files/1.8/logs/";
     else if (client == "plc") path += "/AppData/Roaming/.pvplounge/logs/";
 
     path += "latest.log"
@@ -132,9 +240,11 @@ const clientSwitcher = () => {
         } else {
             sendHeader("Your log file has been switched. Refreshing for these changes to take place...", true)  
             writeToStorage("path", path)
-
-            var window = remote.getCurrentWindow()
-            window.reload()
+            
+            setTimeout(() => {
+                var window = remote.getCurrentWindow()
+                window.reload()
+            }, 3250)
         }
     })
 }
@@ -168,4 +278,25 @@ const modeSwitcher = () => {
 
     writeToStorage("mode", mode)
     tableUpdater()
+}
+
+/* Opacity Settings */
+const body = document.getElementById("body")
+const header = document.getElementById("topnav")
+
+const opacitySlider = document.getElementById("opacitySlider")
+const opacityValue = document.getElementById("opacityValue")
+
+opacitySlider.value = readFromStorage("opacity") || readFromStorage("opacity") != false ? (readFromStorage("opacity") || 40) : 0
+opacityValue.innerHTML = `Opacity: ${readFromStorage("opacity") == false ? 0 : readFromStorage("opacity") || 40}%`
+
+body.style.backgroundColor = `rgba(0, 0, 0, ${opacitySlider.value/100})`
+header.style.backgroundColor = `rgba(0, 0, 0, ${(opacitySlider.value/100)+0.05})`
+
+opacitySlider.oninput = () => {
+    opacityValue.innerHTML = `Opacity: ${opacitySlider.value}%`
+    body.style.backgroundColor = `rgba(0, 0, 0, ${opacitySlider.value/100})`
+    header.style.backgroundColor = `rgba(0, 0, 0, ${(opacitySlider.value/100)+0.05})`
+    
+    writeToStorage("opacity", (opacitySlider.value))
 }

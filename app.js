@@ -1,5 +1,5 @@
 const electron = require('electron')
-const { app, BrowserWindow } = electron
+const { app, BrowserWindow, /*ipcRenderer*/ } = electron
 const path = require('path')
 const url = require('url')
 

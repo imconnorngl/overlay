@@ -1,5 +1,7 @@
 const semver = require('semver');
 
+writeToStorage("version", "1.5.3")
+
 const getLatestReleases = async () => {
     return new Promise(async resolve => {
         const body = await fetch('https://api.github.com/repos/imconnorngl/overlay/releases/latest')

@@ -12,13 +12,12 @@ You should use an overlay because it helps you avoid snipers nicks, and sweaty p
 
 You can find out if a player is partied or is a nick with the tags e.g:
 
-Party, Nicked
+Party & Nicked
 
 ## Where can I download the overlay?
 
 You can download the overlay here:
 
 [Overlay](https://statsify.net/overlay)
-
 
 > **NOTE**: MacOS and Linux are not availible currently but stay tuned for there release!
