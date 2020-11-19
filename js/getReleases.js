@@ -1,6 +1,6 @@
 const semver = require('semver');
 
-writeToStorage("version", "1.5.6")
+writeToStorage("version", "1.5.7")
 
 const getLatestReleases = async () => {
     return new Promise(async resolve => {

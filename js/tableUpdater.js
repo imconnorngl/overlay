@@ -161,7 +161,7 @@ const tableUpdater = async () => {
       player.threatIndex = (Level * FKDR * FKDR)/10
       var threatColor = getThreatColor(player.threatIndex);
       
-      head.innerHTML = `<img src="https://crafatar.com/avatars/${player.uuid}?overlay=true"; class="skull";></img>`
+      head.innerHTML = `<img src="https://crafatar.com/avatars/${player.uuid}?size=16&overlay=true"; class="skull";></img>`
       name.innerHTML = `${makeTooltip(index + 1, mcColorParser(`${getBwFormattedLevel(Math.floor(player.stats.bedwars.level))} ${player.displayName}${player.guild ? player.guild.tag ? ` ${player.guild.mcColor.mc}[${player.guild.tag}]` : "" : ""}`), mcColorParser(`
       ${player.displayName} ${player.guild ? player.guild.tag ? `${player.guild.mcColor.mc}[${player.guild.tag}]` : "" : ""}
       <br>
