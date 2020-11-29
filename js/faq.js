@@ -10,7 +10,7 @@ const pages = [
 §f/t .c | §7Forcefully Clear the Player List<br>
 <br>
 §cExamples§f§8 »<br>
-§f/t .gamerboy80 | §7Forcefully adds \'§fgamerboy80§7\' to the overlay`)}</p>`,
+§f/t .gamerboy80 | §7Forcefully adds \'§fgamerboy80§7\' to the overlay<br><br>`)}</p>`,
 
 `<p>${mcColorParser(`
 §9Threat Formula §8» (§fStar§7*§eFKDR§7^§62§8)§7/§f10<br>

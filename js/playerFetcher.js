@@ -215,8 +215,8 @@ const getGuild = async (uuid) => {
 
 /* Randomly assign which order the credits are in on run */
 var authors = ["imconnorngl", "videogameking", "ugcodrr"]
-var authorRandom = Math.round(Math.random());
-var credits = `Made by ${authors[authorRandom]}, ${authors.filter(a => a != authors[authorRandom])[0]} & ${authors.filter(a => a != authors[authorRandom])[1]} © Statsify Inc.`
+authors = authors.sort(() => .5 - Math.random());
+var credits = `Made by ${authors[0]}, ${authors[1]} & ${authors[2]} © Statsify Inc.`
 
 /* API Counter */
 var api = readFromStorage("api")

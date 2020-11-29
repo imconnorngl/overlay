@@ -48,8 +48,8 @@ const readLogFile = async () => {
 const processLine = async line => {
     if (!line.includes('[Client thread/INFO]: [CHAT]')) return;
 
-    if (line.includes("[CHAT]                                      ")) autoWhoed = false;
-    else if (line.includes("Sending you to mini") || line.includes("[CHAT]                                      ")) {
+ 
+    if (line.includes("Sending you to mini") || line.includes("[CHAT]                                      ")) {
         autoWhoed = false;
         if (lobbyMode == false) {
             resetPlayers()
@@ -101,30 +101,25 @@ const processLine = async line => {
         var player = line.split(" [CHAT] ")[1].match(/\S*(?=( to the party! They have 60 seconds to accept.))/)[0];
 
         addPlayer(player)
-        setTimeout(() => removePlayer(player), 15000)
     } else if (readFromStorage("partyEnabled") && line.split(" [CHAT] ")[1].match(/\S*(?=( party!))/)) { // You Joining Party (Out of Party)
         var player = line.split(" [CHAT] ")[1].match(/\S*(?=('))/)[0];
 
         addPlayer(player)
-        setTimeout(() => removePlayer(player), 15000)
     } else if (readFromStorage("partyEnabled") && line.split(" [CHAT] ")[1].match(/\S*(?=( joined the party.))/)) { // Someone Joining Party (Out of Party)
         var player = line.split(" [CHAT] ")[1].match(/\S*(?=( joined the party.))/)[0];
 
         addPlayer(player)
-        setTimeout(() => removePlayer(player), 15000)
     } else if (readFromStorage("partyEnabled") && line.split(" [CHAT] ")[1].match(/Party Leader: (\S.*)/) && line.split(" [CHAT] ")[1].match(/Party Leader: (\S.*)/).length == 2) { // Party List (Leader)
         var player = line.split(" [CHAT] ")[1].match(/(?<=\: )(.*?)(?= \?)/)
         player = player[0].split(" ");
 
         addPlayer(player[player.length - 1]);
-        setTimeout(() => removePlayer(player[player.length - 1]), 15000)
     } else if (readFromStorage("partyEnabled") && line.split(" [CHAT] ")[1].match(/Party Moderators: (\S.*)/) && line.split(" [CHAT] ")[1].match(/Party Moderators: (\S.*)/).length == 2) { // Party List (Moderators)
         var players = line.split(" [CHAT] ")[1].replace("Party Moderators: ", "").replace(/\[(.*?)\]/g, '');
         players = players.split(" ?");
         players.pop()
         players.forEach(user => {
             addPlayer(user.replace(/ /g, ""))
-            setTimeout(() => removePlayer(user.replace(/ /g, "")), 15000)
         })
     } else if (readFromStorage("partyEnabled") && line.split(" [CHAT] ")[1].match(/Party Members: (\S.*)/) && line.split(" [CHAT] ")[1].match(/Party Members: (\S.*)/).length == 2) { // Party List (Members)
         var players = line.split(" [CHAT] ")[1].replace("Party Members: ", "").replace(/\[(.*?)\]/g, '');
