@@ -22,7 +22,7 @@ const getBwLevel = (exp = 0) => {
         remainingExp -= expForNextLevel
     }
 
-    return parseFloat((level + (remainingExp / 5000)).toFixed(2))
+    return parseFloat((level + (remainingExp / getBwExpForLevel(level + 1))).toFixed(2))
 }
 
 const getBwFormattedLevel = star => {
